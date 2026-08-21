@@ -5,7 +5,7 @@
 | 항목 | 값 |
 | --- | --- |
 | SSID | `JunctionX Korea` |
-| Password | `postech2026` |
+| Password | *(공개 페이지라 생략 — Opening 슬라이드 / 팀 채널 참고)* |
 
 ## 📞 문의·긴급 연락처
 
@@ -16,7 +16,7 @@
 **Online**
 - Participant Discord — 질문은 `❓-question-and-answer` 채널
 - 제출 확인은 `✅-confirm-submission` 채널
-- 긴급: **+82-10-2687-9625 (Trisha Bak)**
+- 긴급: 운영진 담당자 휴대번호 *(공개 페이지라 생략 — Opening 슬라이드 / 팀 채널 참고)*
 - Instagram `@junctionasia` DM
 
 ## 🗺 장소 (HALL)
