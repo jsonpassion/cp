@@ -168,6 +168,11 @@ const ACCENTS = ["--yellow", "--pink", "--blue", "--coral", "--mint", "--lavende
 
 mermaid.initialize({
   startOnLoad: false, theme: "base",
+  gantt: {
+    useWidth: 1100, useMaxWidth: true,
+    barHeight: 22, barGap: 6, topPadding: 52, leftPadding: 132,
+    gridLineStartPadding: 34, fontSize: 12, sectionFontSize: 13, numberSectionStyles: 4
+  },
   themeVariables: {
     fontFamily: "-apple-system, system-ui, 'Apple SD Gothic Neo', Pretendard, sans-serif",
     fontSize: "14px",
