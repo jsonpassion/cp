@@ -11,27 +11,31 @@
 - Submit Final 후 status **Final** 확인 (필요시 Draft로 되돌리기 가능)
 - **제출 후에도 트랙 변경 가능**
 
-## 1. 프로젝트 이름 후보 3종
+## 1. 이름 후보 아카이브 (검토 기록)
 
-솔루션 정체성: **"손에 쥘 수 있는 작은 모델들의 스쿼드가, 아껴 쓴 토큰으로 거대 모델급 답을 낸다."** 이와 얼라인된 2~3음절, 한/영 동시 직관 후보:
+> ✅ **최종 확정: `[541] BIBIMBAP`** — 아래는 검토 과정 기록입니다.
 
-### 🥇 TOKKI (토끼) — 추천
+공통 기준이 된 솔루션 정체성: **"손에 쥘 수 있는 작은 모델들의 스쿼드가, 아껴 쓴 토큰으로 거대 모델급 답을 낸다."**
+
+### 1라운드 — 2~3음절, 한/영 동시 직관
+
+#### TOKKI (토끼)
 - **토큰(TOKen) + 아끼다(KKI)** 의 말장난이 그대로 이름 — 채점 30점 항목인 토큰 효율이 정체성에 박혀 있음
 - 토끼 = 작고 빠르고 꾀 많은 동물. "거북이(거대 모델)를 이기는 토끼" 서사를 뒤집어 쓸 수 있음
 - 영어 화자도 "TOKKI"를 즉시 발음 가능, 한국 심사위원에겐 즉시 귀여움
 - 시각화 마스코트 활용 가능: 에이전트 노드를 토끼로, give-up은 "깡총 물러남"으로 — 데모 엑스포에서 참가자 투표(60%)에 먹히는 비주얼
 
-### 🥈 HANDFUL (핸드풀)
+#### HANDFUL (핸드풀)
 - 키노트의 출제 문장 *"a model you can actually **hold in your hands**"* 를 그대로 이름으로 응수 — Lablup 심사위원이 반드시 알아챔
 - 영어 관용구 *"quite a handful"* = "작지만 만만치 않은 녀석" 이중 의미
 - 2음절(hand-ful), 한글 표기도 직관적
 
-### 🥉 AREUM (아름)
+#### AREUM (아름)
 - "한 **아름**" = 두 팔로 안을 수 있는 분량 — "손에 쥘 수 있는 모델"의 가장 시적인 번역
 - 아름답다의 "아름"과 동음 — 한국적 정서 + 국제 무대에서 이름으로 무리 없음
 - 감성 피치로 갈 경우 최강, 단 말장난 임팩트는 TOKKI보다 약함
 
-## 1-2. 추가 이름 후보 10종 (TOKKI 제외)
+### 2라운드 — 추가 후보 10종
 
 | # | 이름 | 음절 | 뜻·유래 | 얼라인 포인트 |
 | --- | --- | --- | --- | --- |
@@ -48,7 +52,7 @@
 
 **추천 우선순위**: ① HANJUM (출제 문장의 한국어 화답 + 겸손하면서 강한 이미지) ② GONGGI (이중 의미 + 데모 스토리텔링) ③ BANDI (Furiosa 전력 서사 직결). 말장난 임팩트는 TOKKI, 문화 서사는 DURE/DANDI.
 
-## 1-3. 음절 제한 해제 — 재미·직관 우선 10종
+### 3라운드 — 음절 제한 해제, 재미·직관 우선 10종
 
 | # | 이름 | 뜻·유래 | 얼라인 포인트 |
 | --- | --- | --- | --- |
@@ -63,28 +67,28 @@
 | 9 | **다윗 (DAVID)** | 다윗 vs 골리앗 | 작은 자가 거인을 이긴다 — 국제 무대 1초 전달. 영문 표기 그대로 DAVID |
 | 10 | **알뜰 (ALTTEUL)** | 알뜰폰의 그 알뜰 | "알뜰 AI 요금제" — 같은 정답을 몇 분의 일 토큰으로. 알뜰폰 서사 차용 |
 
-## 2. Project Name *
+## 2. Project Name * — ✅ 확정
 
 ```
-[541] HANJUM
+[541] BIBIMBAP
 ```
 
-(이름 확정 전이면 팀명 그대로도 무방 — FAQ 3번. 예: `[541] CouchPotato`)
+> **선정 이유 (직관성 기준)**: 전 세계가 아는 단어라 국제 심사위원에게 1초 전달, 한국 참가자(투표 60%)에겐 웃음과 공감. 그리고 이름이 곧 아키텍처 — **서로 다른 재료(instruct + reasoning 모델)를 한 그릇에 비벼 완성**하는 이기종 스쿼드. 한국 NPU 위에 한국 음식 이름 = 소버린 AI 서사까지 자동 완성.
 
-## 3. Punchline * (200자 이내)
+## 3. Punchline * (200자 이내) — ✅ 확정
 
-**영문 (권장 — 피치덱이 영문 필수라 통일):**
+**영문:**
 
 ```
-TOKKI is a squad of pocket-size models on Korean NPUs that routes, solves,
-verifies — and knows when to quit. Big-model answers at a fraction of the tokens.
+BIBIMBAP is a bowl of small models on Korean NPUs — instruct and reasoning
+agents mixed to perfection, serving big-model answers at a fraction of the tokens.
 ```
 
 **국문 대안:**
 
 ```
-토끼(TOKKI): 손에 쥐는 작은 모델들의 스쿼드. 풀고, 검증하고, 물러날 때를 알아서
-거대 모델급 정답을 토큰 몇 분의 일로 냅니다.
+비빔밥(BIBIMBAP): 한국산 NPU 위에 작은 모델들을 한 그릇에 비볐습니다.
+거대 모델급 정답을 토큰 몇 분의 일로 말아 드립니다.
 ```
 
 ## 4. Team Number *
@@ -98,7 +102,7 @@ verifies — and knows when to quit. Big-model answers at a fraction of the toke
 ## 5. Description * (5000자 이내, 마크다운 지원)
 
 ```markdown
-# TOKKI — the token-thrifty agent squad
+# BIBIMBAP — small models, mixed to perfection
 
 ## The Question We're Answering
 Lablup × FuriosaAI asked: **"How far can you go with a model you can
@@ -106,10 +110,14 @@ actually hold in your hands?"** Frontier AI lives behind massive
 infrastructure owned by the biggest tech companies. We believe the answer
 to accessibility is not a bigger model — it's a smarter structure.
 
+Bibimbap is a Korean dish where separate ingredients — none of them a
+meal on its own — are mixed in one bowl into something complete. That is
+exactly our architecture.
+
 ## Our Answer: Structure over Size
-TOKKI is an AI agent squad built on **AI:GO's Squad functionality**,
+BIBIMBAP is an AI agent squad built on **AI:GO's Squad functionality**,
 running entirely on models served by **FuriosaAI RNGD** NPUs. Instead of
-one giant brain, TOKKI organizes small models into specialized roles:
+one giant brain, we mix small models into specialized roles:
 
 - **Router** — triages each problem by type and difficulty. Easy items
   get a single-shot answer; hard ones wake the full squad.
