@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JunctionX Korea 2026 HQ</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+<script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  :root {
+    --page-bg: #FFFDF5;
+    --card-bg: #FFFFFF;
+    --surface: #F5F0E8;
+    --yellow: #FFD43B;
+    --pink:   #FF6B9D;
+    --blue:   #4DABF7;
+    --coral:  #FF6B35;
+    --mint:   #63E6BE;
+    --lavender:#B197FC;
+    --lime:   #A9E34B;
+    --orange: #FF922B;
+    --danger: #E03131;
+    --ink:    #1A1A1A;
+    --body:   #374151;
+    --bw: 3px;
+    --shadow-sm: 3px 3px 0 var(--ink);
+    --shadow-md: 5px 5px 0 var(--ink);
+    --shadow-lg: 7px 7px 0 var(--ink);
+    --r-sm: 10px; --r-md: 14px; --r-lg: 18px;
+    --accent: var(--yellow);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--page-bg); color: var(--body);
+    font-family: -apple-system, system-ui, "Apple SD Gothic Neo", Pretendard, "Segoe UI", "Noto Sans KR", sans-serif;
+    line-height: 1.7; font-weight: 500;
+  }
+
+  /* ---------- header ---------- */
+  header { background: var(--yellow); border-bottom: var(--bw) solid var(--ink); padding: 1.1rem 1.2rem 1.2rem; }
+  .wrap { max-width: 900px; margin: 0 auto; }
+  .hq-title { display: flex; align-items: center; gap: .7rem; flex-wrap: wrap; }
+  .hq-title h1 {
+    margin: 0; font-size: 1.5rem; font-weight: 900; color: var(--ink);
+    letter-spacing: -.02em; line-height: 1.2;
+  }
+  .slogan {
+    background: var(--ink); color: var(--yellow); font-weight: 900; font-size: .7rem;
+    letter-spacing: .18em; padding: .25rem .6rem; border-radius: var(--r-sm); white-space: nowrap;
+  }
+  .countdowns { display: flex; gap: .6rem; margin-top: .9rem; flex-wrap: wrap; }
+  .cd {
+    background: var(--card-bg); border: var(--bw) solid var(--ink); border-radius: var(--r-md);
+    box-shadow: var(--shadow-sm); padding: .4rem .75rem; font-size: .78rem; font-weight: 700; color: var(--ink);
+  }
+  .cd b { display: block; font-size: 1rem; font-weight: 900; font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+  .cd.urgent { background: var(--coral); color: #fff; }
+  .cd.urgent b { color: #fff; }
+  .cd.done { background: var(--mint); }
+
+  /* ---------- tabs ---------- */
+  .navbar { background: var(--surface); border-bottom: var(--bw) solid var(--ink); padding: .8rem 1.2rem; }
+  nav.tabs { display: flex; gap: .5rem; overflow-x: auto; padding-bottom: 4px; }
+  nav.tabs::-webkit-scrollbar, nav.subtabs::-webkit-scrollbar { height: 0; }
+  nav.tabs button {
+    background: var(--card-bg); border: var(--bw) solid var(--ink); border-radius: var(--r-md);
+    box-shadow: var(--shadow-sm); color: var(--ink); font: inherit; font-size: .85rem; font-weight: 700;
+    padding: .4rem .85rem; cursor: pointer; white-space: nowrap; transition: transform .08s, box-shadow .08s;
+  }
+  nav.tabs button:hover { transform: translate(-1px,-1px); box-shadow: var(--shadow-md); }
+  nav.tabs button.active {
+    background: var(--accent); font-weight: 900; transform: translate(2px,2px); box-shadow: none;
+  }
+  nav.subtabs { display: flex; gap: .45rem; overflow-x: auto; max-width: 900px; margin: .9rem auto 0; padding: 0 1.2rem 4px; }
+  nav.subtabs button {
+    background: var(--card-bg); border: var(--bw) solid var(--ink); border-radius: 999px;
+    color: var(--ink); font: inherit; font-size: .76rem; font-weight: 700;
+    padding: .22rem .8rem; cursor: pointer; white-space: nowrap;
+  }
+  nav.subtabs button.active { background: var(--ink); color: var(--accent); }
+
+  /* ---------- content card ---------- */
+  main {
+    max-width: 900px; margin: 1.2rem auto 3rem; padding: 1.6rem 1.6rem 2.4rem;
+    background: var(--card-bg); border: var(--bw) solid var(--ink);
+    border-radius: var(--r-lg); box-shadow: var(--shadow-lg);
+  }
+  main h1 {
+    font-size: 1.5rem; font-weight: 900; color: var(--ink); margin: 0 0 1.2rem;
+    letter-spacing: -.02em; padding-bottom: .5rem; border-bottom: var(--bw) solid var(--ink);
+  }
+  main h2 {
+    font-size: 1.1rem; font-weight: 900; color: var(--ink); margin: 2.2rem 0 .8rem;
+    background: var(--accent); display: inline-block; padding: .25rem .7rem;
+    border: var(--bw) solid var(--ink); border-radius: var(--r-sm); box-shadow: var(--shadow-sm);
+  }
+  main h3 { font-size: .98rem; font-weight: 900; color: var(--ink); margin: 1.6rem 0 .5rem; }
+  main h3::before { content: "▸ "; color: var(--coral); }
+  main p { margin: .7em 0; }
+  main strong { color: var(--ink); font-weight: 800; }
+  main a { color: var(--ink); text-decoration: none; background: linear-gradient(transparent 62%, var(--lime) 62%); font-weight: 700; }
+  main a:hover { background: linear-gradient(transparent 0%, var(--lime) 0%); }
+  main code {
+    background: var(--surface); border: 2px solid var(--ink); border-radius: 6px;
+    padding: .05em .35em; font-size: .82em; font-weight: 600; color: var(--ink);
+  }
+  main pre {
+    background: var(--ink); border: var(--bw) solid var(--ink); border-radius: var(--r-md);
+    box-shadow: var(--shadow-sm); overflow-x: auto; padding: 0;
+  }
+  main pre code { display: block; background: none; border: none; color: #F5F0E8; padding: .9em 1.1em; font-size: .82em; }
+  main blockquote {
+    margin: 1.2em 0; padding: .8em 1.1em; background: var(--surface);
+    border: var(--bw) solid var(--ink); border-left-width: 10px; border-radius: var(--r-md);
+    box-shadow: var(--shadow-sm); color: var(--body);
+  }
+  main blockquote p:first-child { margin-top: 0; } main blockquote p:last-child { margin-bottom: 0; }
+  main ul, main ol { padding-left: 1.3em; }
+  main li { margin: .3em 0; }
+  main li::marker { color: var(--coral); font-weight: 900; }
+  main hr { border: none; border-top: var(--bw) dashed var(--ink); margin: 2rem 0; }
+  .table-scroll { overflow-x: auto; border: var(--bw) solid var(--ink); border-radius: var(--r-md); box-shadow: var(--shadow-sm); margin: 1.2em 0; }
+  main table { border-collapse: collapse; width: 100%; font-size: .86rem; }
+  main th, main td { border: 2px solid var(--ink); padding: .5em .75em; text-align: left; }
+  main th { background: var(--accent); font-weight: 900; color: var(--ink); }
+  main tbody tr:nth-child(even) { background: var(--surface); }
+  main table tr td:first-child { font-weight: 700; color: var(--ink); }
+  main input[type=checkbox] { width: 1.05em; height: 1.05em; accent-color: var(--ink); margin-right: .45em; vertical-align: -2px; }
+  main img { max-width: 100%; border: var(--bw) solid var(--ink); border-radius: var(--r-md); }
+  .mermaid {
+    background: var(--surface); border: var(--bw) solid var(--ink); border-radius: var(--r-md);
+    box-shadow: var(--shadow-md); padding: 1.1rem .8rem; margin: 1.4em 0;
+    display: flex; justify-content: center; overflow-x: auto;
+  }
+  footer {
+    text-align: center; color: var(--ink); font-size: .76rem; font-weight: 700;
+    padding: 1.2rem; margin: 0 auto 2rem; max-width: 900px;
+    background: var(--surface); border: var(--bw) solid var(--ink);
+    border-radius: var(--r-md); box-shadow: var(--shadow-sm);
+  }
+  .loading { padding: 3rem 1rem; text-align: center; font-weight: 800; color: var(--ink); }
+  @media (max-width: 640px) {
+    main { margin: 1rem .8rem 2rem; padding: 1.2rem 1rem 2rem; border-radius: var(--r-md); box-shadow: var(--shadow-md); }
+    .hq-title h1 { font-size: 1.2rem; }
+    footer { margin: 0 .8rem 2rem; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="hq-title">
+      <h1>⚡ JunctionX Korea 2026 HQ</h1>
+      <span class="slogan">HACK OUR ORIGIN</span>
+    </div>
+    <div class="countdowns" id="countdowns"></div>
+  </div>
+</header>
+<div class="navbar"><div class="wrap"><nav class="tabs" id="tabs"></nav></div></div>
+<nav class="subtabs" id="subtabs"></nav>
+<main id="content"><div class="loading">불러오는 중…</div></main>
+<footer>JunctionX Korea 2026 · POSTECH · 팀 내부 정리용 (비공식) · 콘텐츠는 <code>content/</code>에 마크다운으로 누적</footer>
+
+<script>
+const ACCENTS = ["--yellow", "--pink", "--blue", "--coral", "--mint", "--lavender"];
+
+mermaid.initialize({
+  startOnLoad: false, theme: "base",
+  themeVariables: {
+    fontFamily: "-apple-system, system-ui, 'Apple SD Gothic Neo', Pretendard, sans-serif",
+    fontSize: "14px",
+    background: "#F5F0E8",
+    primaryColor: "#FFD43B", primaryTextColor: "#1A1A1A", primaryBorderColor: "#1A1A1A",
+    secondaryColor: "#B197FC", secondaryTextColor: "#1A1A1A", secondaryBorderColor: "#1A1A1A",
+    tertiaryColor: "#63E6BE", tertiaryTextColor: "#1A1A1A", tertiaryBorderColor: "#1A1A1A",
+    lineColor: "#1A1A1A", textColor: "#1A1A1A",
+    mainBkg: "#FFFFFF", nodeBorder: "#1A1A1A", clusterBkg: "#FFFDF5", clusterBorder: "#1A1A1A",
+    edgeLabelBackground: "#FFFFFF", noteBkgColor: "#FFD43B", noteTextColor: "#1A1A1A", noteBorderColor: "#1A1A1A",
+    pie1: "#FFD43B", pie2: "#FF6B9D", pie3: "#4DABF7", pie4: "#63E6BE", pie5: "#FF922B",
+    pieStrokeColor: "#1A1A1A", pieStrokeWidth: "3px", pieOuterStrokeColor: "#1A1A1A", pieOuterStrokeWidth: "3px",
+    pieTitleTextSize: "17px", pieSectionTextSize: "14px",
+    cScale0: "#FFD43B", cScale1: "#FF6B9D", cScale2: "#4DABF7",
+    critBorderColor: "#E03131", critBkgColor: "#FF6B35",
+    taskBkgColor: "#4DABF7", taskBorderColor: "#1A1A1A", taskTextColor: "#1A1A1A", taskTextDarkColor: "#1A1A1A",
+    activeTaskBkgColor: "#A9E34B", activeTaskBorderColor: "#1A1A1A",
+    doneTaskBkgColor: "#F5F0E8", doneTaskBorderColor: "#1A1A1A",
+    gridColor: "#C9C2B4", sectionBkgColor: "#FFFDF5", sectionBkgColor2: "#F5F0E8",
+    altSectionBkgColor: "#FFFFFF", todayLineColor: "#E03131",
+    signalColor: "#1A1A1A", signalTextColor: "#1A1A1A",
+    actorBkg: "#FFD43B", actorBorder: "#1A1A1A", actorTextColor: "#1A1A1A",
+    labelBoxBkgColor: "#B197FC", labelBoxBorderColor: "#1A1A1A", labelTextColor: "#1A1A1A",
+    activationBkgColor: "#63E6BE", activationBorderColor: "#1A1A1A"
+  }
+});
+
+const DEADLINES = [
+  { label: "🚀 Kick-off 제출", t: "2026-08-22T00:00:00+09:00" },
+  { label: "🏁 Final 제출",    t: "2026-08-23T12:00:00+09:00" },
+  { label: "🎤 Final PT",      t: "2026-08-23T16:00:00+09:00" },
+];
+function tickCountdowns() {
+  document.getElementById("countdowns").innerHTML = DEADLINES.map(d => {
+    const diff = new Date(d.t) - Date.now();
+    if (diff <= 0) return `<span class="cd done">${d.label}<b>지남</b></span>`;
+    const h = Math.floor(diff / 3.6e6), m = Math.floor(diff % 3.6e6 / 6e4), s = Math.floor(diff % 6e4 / 1e3);
+    const cls = diff < 3 * 3.6e6 ? "cd urgent" : "cd";
+    return `<span class="${cls}">${d.label}<b>${h}h ${String(m).padStart(2,"0")}m ${String(s).padStart(2,"0")}s</b></span>`;
+  }).join("");
+}
+setInterval(tickCountdowns, 1000); tickCountdowns();
+
+let MANIFEST = null;
+const parseHash = () => { const [tab, sub] = location.hash.replace(/^#\/?/, "").split("/"); return { tab, sub }; };
+const findTab = id => MANIFEST.tabs.find(t => t.id === id) || MANIFEST.tabs[0];
+
+function renderNav() {
+  const { tab, sub } = parseHash();
+  const cur = findTab(tab);
+  const curSub = cur.subtabs.find(s => s.id === sub) || cur.subtabs[0];
+  const idx = MANIFEST.tabs.indexOf(cur);
+  document.documentElement.style.setProperty("--accent", `var(${ACCENTS[idx % ACCENTS.length]})`);
+  document.getElementById("tabs").innerHTML = MANIFEST.tabs.map(t =>
+    `<button class="${t.id === cur.id ? "active" : ""}" onclick="location.hash='#/${t.id}/${t.subtabs[0].id}'">${t.label}</button>`).join("");
+  document.getElementById("subtabs").innerHTML = cur.subtabs.length > 1 ? cur.subtabs.map(s =>
+    `<button class="${s.id === curSub.id ? "active" : ""}" onclick="location.hash='#/${cur.id}/${s.id}'">${s.label}</button>`).join("") : "";
+  return curSub;
+}
+
+async function render() {
+  const curSub = renderNav();
+  const main = document.getElementById("content");
+  main.innerHTML = '<div class="loading">불러오는 중…</div>';
+  try {
+    const res = await fetch(`content/${curSub.file}?v=${MANIFEST.version || 1}`);
+    if (!res.ok) throw new Error(res.status);
+    main.innerHTML = marked.parse(await res.text(), { gfm: true });
+    main.querySelectorAll("pre code.language-mermaid").forEach(c => {
+      const div = document.createElement("div");
+      div.className = "mermaid"; div.textContent = c.textContent;
+      c.closest("pre").replaceWith(div);
+    });
+    main.querySelectorAll("table").forEach(t => {
+      const box = document.createElement("div"); box.className = "table-scroll";
+      t.replaceWith(box); box.appendChild(t);
+    });
+    await mermaid.run({ nodes: main.querySelectorAll(".mermaid") });
+    window.scrollTo(0, 0);
+  } catch (e) {
+    main.innerHTML = `<div class="loading">콘텐츠를 불러오지 못했습니다 (${e.message})<br><code>content/${curSub.file}</code> 확인</div>`;
+  }
+}
+
+window.addEventListener("hashchange", render);
+fetch("content/manifest.json").then(r => r.json()).then(m => { MANIFEST = m; render(); });
+</script>
+</body>
+</html>
