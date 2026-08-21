@@ -258,7 +258,7 @@ async function render() {
 }
 
 window.addEventListener("hashchange", render);
-fetch("content/manifest.json").then(r => r.json()).then(m => { MANIFEST = m; render(); });
+fetch("content/manifest.json", { cache: "no-cache" }).then(r => r.json()).then(m => { MANIFEST = m; render(); });
 </script>
 </body>
 </html>
