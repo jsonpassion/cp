@@ -1,5 +1,5 @@
 {
-  "version": 4,
+  "version": 5,
   "tabs": [
     {
       "id": "overview", "label": "🏠 대시보드",
@@ -27,6 +27,7 @@
       "subtabs": [
         { "id": "mission", "label": "미션 분석", "file": "track-mission.md" },
         { "id": "scoring", "label": "채점 기준", "file": "track-scoring.md" },
+        { "id": "benchmark", "label": "벤치마크 구성", "file": "track-benchmark.md" },
         { "id": "strategy", "label": "필승 전략", "file": "track-strategy.md" },
         { "id": "transcript", "label": "트랜스크립트 번역", "file": "track-transcript.md" },
         { "id": "research", "label": "회사 리서치", "file": "track-research.md" }
