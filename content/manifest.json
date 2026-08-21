@@ -1,52 +1,135 @@
 {
-  "version": 6,
+  "version": 7,
   "tabs": [
     {
-      "id": "overview", "label": "🏠 대시보드",
+      "id": "overview",
+      "label": "🏠 대시보드",
       "subtabs": [
-        { "id": "summary", "label": "핵심 요약", "file": "overview-summary.md" }
+        {
+          "id": "summary",
+          "label": "핵심 요약",
+          "file": "overview-summary.md"
+        }
       ]
     },
     {
-      "id": "missions", "label": "📋 미션·규정",
+      "id": "missions",
+      "label": "📋 미션·규정",
       "subtabs": [
-        { "id": "kickoff", "label": "Kick-off", "file": "missions-kickoff.md" },
-        { "id": "final", "label": "Final", "file": "missions-final.md" },
-        { "id": "conduct", "label": "Code of Conduct", "file": "missions-conduct.md" },
-        { "id": "judging", "label": "심사·상금", "file": "missions-judging.md" }
+        {
+          "id": "kickoff",
+          "label": "Kick-off",
+          "file": "missions-kickoff.md"
+        },
+        {
+          "id": "final",
+          "label": "Final",
+          "file": "missions-final.md"
+        },
+        {
+          "id": "conduct",
+          "label": "Code of Conduct",
+          "file": "missions-conduct.md"
+        },
+        {
+          "id": "judging",
+          "label": "심사·상금",
+          "file": "missions-judging.md"
+        }
       ]
     },
     {
-      "id": "schedule", "label": "🗓 일정",
+      "id": "schedule",
+      "label": "🗓 일정",
       "subtabs": [
-        { "id": "all", "label": "전체 타임라인", "file": "schedule-all.md" }
+        {
+          "id": "all",
+          "label": "전체 타임라인",
+          "file": "schedule-all.md"
+        }
       ]
     },
     {
-      "id": "track", "label": "🎯 Lablup×Furiosa",
+      "id": "track",
+      "label": "🎯 Lablup×Furiosa",
       "subtabs": [
-        { "id": "mission", "label": "미션 분석", "file": "track-mission.md" },
-        { "id": "scoring", "label": "채점 기준", "file": "track-scoring.md" },
-        { "id": "benchmark", "label": "벤치마크 구성", "file": "track-benchmark.md" },
-        { "id": "strategy", "label": "필승 전략", "file": "track-strategy.md" },
-        { "id": "transcript", "label": "트랜스크립트 번역", "file": "track-transcript.md" },
-        { "id": "research", "label": "회사 리서치", "file": "track-research.md" }
+        {
+          "id": "plan",
+          "label": "작전 플랜",
+          "file": "track-plan.md"
+        },
+        {
+          "id": "mission",
+          "label": "미션 분석",
+          "file": "track-mission.md"
+        },
+        {
+          "id": "scoring",
+          "label": "채점 기준",
+          "file": "track-scoring.md"
+        },
+        {
+          "id": "benchmark",
+          "label": "벤치마크 구성",
+          "file": "track-benchmark.md"
+        },
+        {
+          "id": "strategy",
+          "label": "필승 전략",
+          "file": "track-strategy.md"
+        },
+        {
+          "id": "transcript",
+          "label": "트랜스크립트 번역",
+          "file": "track-transcript.md"
+        },
+        {
+          "id": "research",
+          "label": "회사 리서치",
+          "file": "track-research.md"
+        }
       ]
     },
     {
-      "id": "tracks", "label": "🛰 타 트랙",
+      "id": "tracks",
+      "label": "🛰 타 트랙",
       "subtabs": [
-        { "id": "compare", "label": "트랙 비교", "file": "tracks-compare.md" },
-        { "id": "status", "label": "정리 현황", "file": "tracks-status.md" },
-        { "id": "microsoft", "label": "Microsoft×경북", "file": "tracks-microsoft.md" },
-        { "id": "upstage", "label": "Upstage", "file": "tracks-upstage.md" }
+        {
+          "id": "compare",
+          "label": "트랙 비교",
+          "file": "tracks-compare.md"
+        },
+        {
+          "id": "status",
+          "label": "정리 현황",
+          "file": "tracks-status.md"
+        },
+        {
+          "id": "microsoft",
+          "label": "Microsoft×경북",
+          "file": "tracks-microsoft.md"
+        },
+        {
+          "id": "upstage",
+          "label": "Upstage",
+          "file": "tracks-upstage.md"
+        }
       ]
     },
     {
-      "id": "venue", "label": "📍 현장 정보",
+      "id": "venue",
+      "label": "📍 현장 정보",
       "subtabs": [
-        { "id": "info", "label": "WiFi·연락처·장소", "file": "venue-info.md" },
-        { "id": "bingo", "label": "BINGO", "file": "venue-bingo.md" }
+        {
+          "id": "info",
+          "label": "WiFi·연락처·장소",
+          "file": "venue-info.md"
+        },
+        {
+          "id": "bingo",
+          "label": "BINGO",
+          "file": "venue-bingo.md"
+        }
       ]
     }
   ]
