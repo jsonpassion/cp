@@ -90,3 +90,11 @@ trace.jsonl 이벤트 스키마(최소): `{t, item_id, track, agent, event(start
 - **데이터 소스 원칙**: 채점 대상은 "로그(텍스트) 데이터로 표현된 Trace" → **`logs/events.jsonl`(AI:GO 원본 로그)이 source of truth.** 뷰어는 이 파일을 `.squad.json`과 함께 **드래그 앤 드롭으로 직접 읽어 브라우저 안에서 정규화**한다. `trace.json`은 같은 규칙으로 만든 캐시/내보내기(베이스라인·캘리브레이션 부가 데이터 동봉용)일 뿐, 시각화의 근거는 항상 events.jsonl 한 줄 한 줄로 거슬러 올라간다(Traceability).
 - 첫 리플레이 데이터: BIBIMBAP 1문항 완주(49 이벤트·3 태스크·28 호출·26,808 토큰) — "단독 모델 617 tok vs 스쿼드 26,808 tok = 43×" 비교 막대가 The Receipt에 이미 들어감
 - 테스트 절차 T0~T5 (준비·Bowl·Lens·Receipt·원본 로그 적재·견고성) 는 `docs/TESTING.md` 참조
+
+### 뷰어 v2 (8/22 저녁) — 최신 스쿼드(5종) 기준으로 갱신
+
+- **기본 적재 = run-002 (v3.2 · 5 agents · 1,564 tok)**, 헤더의 런 선택으로 run-001 (v1 · 8 agents · 26,808 tok) 전환 → **Before/After 리플레이**가 클릭 한 번
+- The Bowl: 5개 노드 + 모델명 표기(전원 gpt-oss-120b) + 중앙 홉 카운터("홉 2" = 플래너+전문가)
+- Decision Lens 신규 행: **라우팅 근거**(요청 머리의 [PLANNING DIRECTIVE]가 지정한 담당 ↔ 실제 실행 에이전트 일치 ✅) · **원칙 0**(가동 2/5, 미가동도 로스터 읽기 비용 → 5종 고정) · 비용 판단("플래너 홉 + 전문가 1홉 + 취합 = AI:GO 최소 경로 도달 · v1 대비 ÷17")
+- The Receipt: **3단 막대** 단독 617 → 스쿼드 v1 26,808 → 스쿼드 v3.2 1,564 + 해설("에이전트 호출 1회 = 컨텍스트 전체를 한 번 더 → 원칙 0")
+- v3.4 스쿼드로 완주 로그가 생기면 run-003으로 정규화해 After를 교체(절차는 `docs/TESTING.md` T6)
