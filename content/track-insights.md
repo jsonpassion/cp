@@ -126,6 +126,22 @@ Receipt 화면의 증거 한 줄: **같은 문항(math-visible-0001) 단독 gpt-
 
 `jxc-selfeval/quick.sh <prompts_dir>` — 고정 소수 세트(generic 앞 20 · math 앞 15 · LCB 20)로 5~8분 내 재검증, **부트스트랩 90% 신뢰구간**을 함께 출력해 소표본 차이가 노이즈인지 판정(20문항 65% vs 60% 같은 착시 방지). 베이스라인 기준선과 나란히 비교. 스쿼드 전체(플래너·루프)는 로컬 API로 못 돌리므로 **솔버 품질은 이 루틴, 오케스트레이션은 1문항 GUI 완주 + `analyze_run.py`** 로 이원 검증.
 
+## ✅ v3.7 검증 (08-22 19:27) — `/no_think` 플래너 2턴 실측 + 로컬 "2회 호출"의 정체
+
+**플래너 2턴 시뮬레이션(직접 API, AI:GO 루프와 같은 순서: 계획 호출 → create_task 결과 → 마무리 호출)**
+
+| 플래너 | 1턴 (create_task) | 2턴 (도구 결과 후) | 출력 합계 | 시간 |
+| --- | --- | --- | --- | --- |
+| **Qwen3 `/no_think`** (2회 반복) | 54 tok · create_task **1회** | **7 tok · "PLAN READY"** | **61 tok** | 1.4s |
+| gpt-oss | 187 tok (추론 128) · create_task 1회 | 6 tok · "PLAN READY" | 193 tok | 3.0s |
+| Qwen3 thinking ON (19:0x 측정) | 1,229 tok · create_task 0회 | — | 1,229+ | 17.4s |
+
+→ `/no_think`는 2턴 모두 유효(도구 결과 뒤에도 thinking 재개 없음). 플래너 출력은 **문항당 ~61 tok**, 입력은 prefix 캐시 대상. GUI 재검증: generic 24.4s(이전 58.2s) · coding 55.9s, 둘 다 **태스크 1**. 남은 지연은 엔드포인트 부하(공용)로 추정 — 토큰과 무관.
+
+**로컬 "태스크당 2회 호출"의 정체** — 앱 로그: `Tool call round 1/1: 1 tool call(s)` → `WARN Tool call loop reached max rounds (1), making final call without tools`. 즉 솔버(gpt-oss)가 **GUI에서 켜져 있는 도구(read_file 등)를 먼저 호출하려다** 라운드 한도(1)에 걸리고, 도구 없이 다시 호출해 답을 냈다. **평가는 tool-less라 1회 호출**(986 tok 런이 그 모습). 로컬 수치는 그만큼 과대 — GUI에서 도구를 전부 끄면 로컬도 1회가 된다(선택).
+
+**제출 준비 상태 = v3.7b**: Conductor(Qwen3, `/no_think`, v3.4 프롬프트) + Generic-Solver v3.7b(private reasoning) + Math·LCB·SWE v3.6(답만 출력) + one-shot v2.2. 3트랙 라우팅 6/6 + /no_think 후 2/2.
+
 ## 🧪 "답만 출력"의 부작용과 교정 (08-22 19:14) — 추론까지 줄어든다
 
 v3.6(Confidence 삭제 + "답 외 아무것도")를 고정 20문항으로 재검증하자 generic만 떨어졌다. 같은 20문항 4변형 동시 측정:
