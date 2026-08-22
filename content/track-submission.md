@@ -45,6 +45,11 @@ flowchart LR
 - **무시됨**(Check 경고로 확정): `settingsOverrides`(maxTokens·maxToolCalls) · `toolConfig.enabledTools`(평가는 tool-less) → GUI 저장 시 도구가 다시 켜져도 무방
 - 구조: `{squadId, squadName, initializedAt, appVersion, config: {agents: [...]}}` — 에이전트 배열은 `config.agents`
 
+### 2차 제출 완료 (18:44, v3.5) → 3차(최종) = v3.6
+
+- 2차: `.squad.json` 17:52본(Qwen3 플래너) + one-shot v2.1 → 큐 진입. 백업 `jxc-selfeval/submissions/2nd_v3.5_1844.squad.json`
+- 3차(최종): 솔버 4종 프롬프트 v3.6(답만 출력) 적용 → Save → `check_squad.py --copy` → one-shot **v2.2** 3칸 재붙여넣기 → Check → Submit (2차가 실행으로 넘어가 대기 슬롯이 비면)
+
 ### 현재 파일 상태 (check_squad.py, 8/22 17:52 저장본 = **v3.5**) — ✅ 제출 가능
 
 | 항목 | 상태 |

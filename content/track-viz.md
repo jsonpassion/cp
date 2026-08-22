@@ -87,6 +87,7 @@ trace.jsonl 이벤트 스키마(최소): `{t, item_id, track, agent, event(start
 ## 7. 구현 현황 (8/22 오후) — 뷰어 v1 완성
 
 - 위치: 프로젝트 리포 `bibimbap/viewer/viewer.html` (단일 파일, 의존성 0) + `normalize.py` + 테스트 절차 `docs/TESTING.md`
+- **운영진 확인(18:36)**: "실행 로그 형식은 고정" — 키/값 커스터마이즈 불가. 뷰어가 AI:GO 원본 `events.jsonl`을 그대로 읽어 브라우저에서 정규화하는 설계가 정답이며, 평가 러너의 로그도 같은 형식이므로 **제출 런의 로그를 받으면 그대로 드롭해 리플레이 가능**.
 - **데이터 소스 원칙**: 채점 대상은 "로그(텍스트) 데이터로 표현된 Trace" → **`logs/events.jsonl`(AI:GO 원본 로그)이 source of truth.** 뷰어는 이 파일을 `.squad.json`과 함께 **드래그 앤 드롭으로 직접 읽어 브라우저 안에서 정규화**한다. `trace.json`은 같은 규칙으로 만든 캐시/내보내기(베이스라인·캘리브레이션 부가 데이터 동봉용)일 뿐, 시각화의 근거는 항상 events.jsonl 한 줄 한 줄로 거슬러 올라간다(Traceability).
 - 첫 리플레이 데이터: BIBIMBAP 1문항 완주(49 이벤트·3 태스크·28 호출·26,808 토큰) — "단독 모델 617 tok vs 스쿼드 26,808 tok = 43×" 비교 막대가 The Receipt에 이미 들어감
 - 테스트 절차 T0~T5 (준비·Bowl·Lens·Receipt·원본 로그 적재·견고성) 는 `docs/TESTING.md` 참조

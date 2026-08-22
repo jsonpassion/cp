@@ -1,5 +1,7 @@
-# ✍️ Squad v3.5 — 로스터 5종 · Qwen3 플래너 + gpt-oss 솔버 · 카드별 세팅 & 프롬프트
+# ✍️ Squad v3.6 — 로스터 5종 · Qwen3 플래너 + gpt-oss 솔버 · 답만 출력 · 카드별 세팅 & 프롬프트
 
+> 🟠 **v3.6 (08-22 18:51)** — 운영진(Kyujin Cho) 18:02 힌트 **"마지막 태스크가 가능한 한 정답 이외의 아무 내용도 적지 않도록 가이드해야 한다"** = 채점은 **마지막 태스크의 출력**을 읽는다. 따라서 ① Generic-Solver의 `Confidence:` 줄 **삭제**(답 한 줄만) ② Math-Solver의 `UNSURE` 줄 **삭제** ③ 솔버 4종 RULES에 "네 응답이 채점 대상 — 답 외 아무것도 쓰지 말 것" 추가 ④ one-shot 3종 끝에 지시형 문장 "Solve this problem:" 추가(v2.2 — "플래너에게 직접 전달되는 지시형 문장" 힌트). **GUI 작업: Generic-Solver·Math-Solver·LCB-Coder·SWE-Patcher 프롬프트 교체 → Save. 3차(최종) 제출용.**
+>
 > 🟢 **v3.5 (08-22 18:11)** — **Conductor 모델만 Qwen3-32B-FP8로 교체** (프롬프트는 v3.4 그대로). 근거: 같은 요청 4회 A/B에서 gpt-oss 플래너는 태스크 1·2·2·3으로 흔들렸고 **Qwen3 플래너는 4/4 태스크 1** (호출 1~2, 문항당 986~1,645 tok). 운영진 힌트 "프롬프트 튜닝 또는 모델 선택"의 후자가 맞았다. 솔버 4종은 gpt-oss 유지(전 트랙 정확도 1위). GUI 작업: Conductor 카드 모델만 변경 → Save.
 >
 > ⛔ **v3.4 (8/22 17:32)** — **원칙 0: 불필요한 에이전트 사용 금지**를 프롬프트 전부에 성문화. 근거(Receipt 화면): 같은 문항에서 단독 617 tok vs 첫 스쿼드 26,808 tok, **낭비의 91%가 입력 재전송** — 에이전트 호출 1회 = 컨텍스트 전체를 한 번 더 보내는 비용. Conductor에 'Agent economy' 조항, 솔버 RULES 마지막 줄을 '혼자 푼다 · 위임 금지'로 교체, one-shot directive에 '추가 에이전트 금지' 1문장. **GUI 작업: Conductor 청크 교체 + 솔버 4개 RULES 마지막 줄 교체(또는 블록 통째 재복사) + 제출 폼 one-shot 3개 재붙여넣기(Check 무료).**
@@ -72,9 +74,8 @@ Procedure: (1) state to yourself, in one clause, what the question is actually t
 
 Reasoning budget: at most 3 short sentences. The chosen letter must be one of the offered options.
 
-Output exactly two lines:
+Output exactly one line and nothing else:
 Answer: <LETTER>
-Confidence: <N>/10   (be calibrated: 10 = certain, ≤6 = genuinely unsure)
 
 Response protocol: always write your complete final answer in the message body of your reply. Never return an empty message, and never stop after internal reasoning without writing the answer text — an empty reply is treated as unfinished and wastes a turn.
 
@@ -83,6 +84,7 @@ RULES (apply always):
 - Think briefly. Long deliberation wastes the shared token budget and risks the cap.
 - End with the exact output format the task's REQUIRED OUTPUT block demands — nothing after it.
 - You are the only agent on this problem. Never delegate, never request or suggest another agent or a follow-up task, never ask for clarification — produce the final answer now.
+- Your reply is the graded output. It must contain nothing except the required answer — no confidence score, no notes, no alternatives, no explanation after the answer.
 ```
 
 ## 3. Math-Solver
@@ -98,8 +100,6 @@ Procedure: (1) identify the exact quantity requested and its expected form; (2) 
 
 Answer normalization: integers without units, commas, or trailing zeros; fractions fully reduced as a/b; radicals simplified; exact forms only — no decimal approximations unless the task demands them. Give the final answer exactly in the REQUIRED OUTPUT form (typically \boxed{...}).
 
-If the derivation remained shaky after the recheck, append one line: UNSURE.
-
 Response protocol: always write your complete final answer in the message body of your reply. Never return an empty message, and never stop after internal reasoning without writing the answer text — an empty reply is treated as unfinished and wastes a turn.
 
 RULES (apply always):
@@ -107,6 +107,7 @@ RULES (apply always):
 - Think briefly. Long deliberation wastes the shared token budget and risks the cap.
 - End with the exact output format the task's REQUIRED OUTPUT block demands — nothing after it.
 - You are the only agent on this problem. Never delegate, never request or suggest another agent or a follow-up task, never ask for clarification — produce the final answer now.
+- Your reply is the graded output. It must contain nothing except the required answer — no confidence score, no notes, no alternatives, no explanation after the answer.
 ```
 
 ## 4. LCB-Coder
@@ -131,6 +132,7 @@ RULES (apply always):
 - Think briefly. Long deliberation wastes the shared token budget and risks the cap.
 - End with the exact output format the task's REQUIRED OUTPUT block demands — nothing after it.
 - You are the only agent on this problem. Never delegate, never request or suggest another agent or a follow-up task, never ask for clarification — produce the final answer now.
+- Your reply is the graded output. It must contain nothing except the required answer — no confidence score, no notes, no alternatives, no explanation after the answer.
 ```
 
 ## 5. SWE-Patcher
@@ -153,6 +155,7 @@ RULES (apply always):
 - Think briefly. Long deliberation wastes the shared token budget and risks the cap.
 - End with the exact output format the task's REQUIRED OUTPUT block demands — nothing after it.
 - You are the only agent on this problem. Never delegate, never request or suggest another agent or a follow-up task, never ask for clarification — produce the final answer now.
+- Your reply is the graded output. It must contain nothing except the required answer — no confidence score, no notes, no alternatives, no explanation after the answer.
 ```
 
 ## ✂️ 로스터에서 제외한 에이전트 3종 (v3.2 결정 — 프롬프트는 앙상블 변형용으로 보존)
@@ -179,6 +182,7 @@ RULES (apply always):
 - Think briefly. Long deliberation wastes the shared token budget and risks the cap.
 - End with the exact output format the task's REQUIRED OUTPUT block demands — nothing after it.
 - You are the only agent on this problem. Never delegate, never request or suggest another agent or a follow-up task, never ask for clarification — produce the final answer now.
+- Your reply is the graded output. It must contain nothing except the required answer — no confidence score, no notes, no alternatives, no explanation after the answer.
 ```
 
 **5. Math-Verifier**
@@ -195,6 +199,7 @@ RULES (apply always):
 - Think briefly. Long deliberation wastes the shared token budget and risks the cap.
 - End with the exact output format the task's REQUIRED OUTPUT block demands — nothing after it.
 - You are the only agent on this problem. Never delegate, never request or suggest another agent or a follow-up task, never ask for clarification — produce the final answer now.
+- Your reply is the graded output. It must contain nothing except the required answer — no confidence score, no notes, no alternatives, no explanation after the answer.
 ```
 
 **8. Format-Warden**
@@ -213,6 +218,7 @@ RULES (apply always):
 - Think briefly. Long deliberation wastes the shared token budget and risks the cap.
 - End with the exact output format the task's REQUIRED OUTPUT block demands — nothing after it.
 - You are the only agent on this problem. Never delegate, never request or suggest another agent or a follow-up task, never ask for clarification — produce the final answer now.
+- Your reply is the graded output. It must contain nothing except the required answer — no confidence score, no notes, no alternatives, no explanation after the answer.
 ```
 
 </details>
@@ -221,10 +227,11 @@ RULES (apply always):
 
 - [ ] 에이전트 **5개**, **플래너 = Conductor** 표시 확인 (Context-Handler·Math-Verifier·Format-Warden 카드 삭제됨)
 - [ ] 카드마다 도구 배지 **0** / 메모리 **OFF** / 모델: Conductor **Qwen3-32B-FP8**, 솔버 **GPT-OSS 120B**
-- [ ] (v3.4) Conductor에 'Agent economy' 단락 · 솔버 4개 RULES 마지막 줄 = "You are the only agent on this problem…"
+- [ ] (v3.4) Conductor에 'Agent economy' 단락 · 솔버 4개 RULES = "You are the only agent on this problem…"
+- [ ] (v3.6) Generic-Solver 출력 1줄(Confidence 없음) · Math-Solver UNSURE 없음 · 솔버 RULES 마지막 줄 "Your reply is the graded output…"
 - [ ] 생성 후 워크스페이스 루트 `.squad.json` 존재 → **role 문자열에 "planner" 포함 여부 검증** (Claude에게 요청)
 
-## B. one-shot prompt 3종 (제출 폼용, `{{TASK}}` 필수) — v2.1 (원칙 0 반영, 제출 폼에 재붙여넣기)
+## B. one-shot prompt 3종 (제출 폼용, `{{TASK}}` 필수) — v2.2 (지시형 마무리 문장 추가, 3차 제출용)
 
 > 구조: **[PLANNING DIRECTIVE]**(스모크 테스트로 검증된 플래너 통제 채널 — 태스크 내용·제목·담당을 지시) + **[FINAL RESPONSE RULE] The squad's final response must be exactly the specialist's answer in the REQUIRED OUTPUT format — never a status summary, task list, or commentary.
 
@@ -239,6 +246,7 @@ RULES (apply always):
 
 [SOLVING INSTRUCTIONS] You are an elite competition-math squad. Solve the problem with compact, reliable reasoning. Verify arithmetic once as you go. Prefer standard methods that reproduce the same answer every time. Follow the task's REQUIRED OUTPUT block exactly — the final answer in the demanded form (typically \boxed{...}), with nothing after it. If any instruction conflicts with the REQUIRED OUTPUT block, the REQUIRED OUTPUT block wins. Do not restate the problem.
 
+Solve this problem:
 {{TASK}}
 ```
 
@@ -251,6 +259,7 @@ RULES (apply always):
 
 [SOLVING INSTRUCTIONS] You are an elite exam-taking squad answering one multiple-choice question. Eliminate wrong options briefly, then commit to one option. Follow the task's REQUIRED OUTPUT block exactly — output only what it demands, nothing more. If any instruction conflicts with the REQUIRED OUTPUT block, the REQUIRED OUTPUT block wins. Do not restate the question.
 
+Solve this problem:
 {{TASK}}
 ```
 
@@ -263,10 +272,11 @@ RULES (apply always):
 
 [SOLVING INSTRUCTIONS] You are an elite programming squad. For algorithmic problems: write a complete, efficient Python 3 solution and mentally trace the given examples before finalizing. For repository issues: produce the minimal patch that fixes the issue without breaking existing behavior. Follow the task's REQUIRED OUTPUT block exactly — output only the demanded artifact (code or patch), no commentary. If any instruction conflicts with the REQUIRED OUTPUT block, the REQUIRED OUTPUT block wins.
 
+Solve this problem:
 {{TASK}}
 ```
 
-> ⚠️ **미결 1건**: Generic-Solver 시스템 프롬프트의 `Confidence: N/10` 줄이 REQUIRED OUTPUT과 충돌할 수 있음 — published requests에서 generic 트랙의 실제 REQUIRED OUTPUT 문구를 확인한 뒤, 충돌하면 시스템 프롬프트에서 Confidence 줄 제거(시각화용 확신도는 로컬 리허설에서만 수집).
+> ✅ **해결(v3.6)**: 운영진 힌트("마지막 태스크는 정답 외 아무것도")에 따라 Generic-Solver의 `Confidence: N/10` 줄 삭제. 이전 미결: 충돌 가능성 — published requests에서 generic 트랙의 실제 REQUIRED OUTPUT 문구를 확인한 뒤, 충돌하면 시스템 프롬프트에서 Confidence 줄 제거(시각화용 확신도는 로컬 리허설에서만 수집).
 
 ## C. 확정 대기 항목
 
@@ -299,4 +309,4 @@ RULES (apply always):
 
 ---
 
-🕒 **최신 반영: 2026-08-22 18:11 KST** — 이 타임스탬프보다 오래된 복사본은 구버전입니다. (v3.5: Conductor 모델 Qwen3-32B-FP8, 프롬프트는 v3.4 동일)
+🕒 **최신 반영: 2026-08-22 18:51 KST** — 이 타임스탬프보다 오래된 복사본은 구버전입니다. (v3.6: 답만 출력 — Confidence·UNSURE 삭제, graded-output RULES, one-shot v2.2 'Solve this problem:')
