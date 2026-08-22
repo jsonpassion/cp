@@ -126,6 +126,20 @@ Receipt 화면의 증거 한 줄: **같은 문항(math-visible-0001) 단독 gpt-
 
 `jxc-selfeval/quick.sh <prompts_dir>` — 고정 소수 세트(generic 앞 20 · math 앞 15 · LCB 20)로 5~8분 내 재검증, **부트스트랩 90% 신뢰구간**을 함께 출력해 소표본 차이가 노이즈인지 판정(20문항 65% vs 60% 같은 착시 방지). 베이스라인 기준선과 나란히 비교. 스쿼드 전체(플래너·루프)는 로컬 API로 못 돌리므로 **솔버 품질은 이 루틴, 오케스트레이션은 1문항 GUI 완주 + `analyze_run.py`** 로 이원 검증.
 
+## 🎯 점수 최우선 → v7.1 "3 솔버 + Judge" 앙상블 DAG (08-23 01:20, 8/23)
+
+보드 규칙상 점수는 정확도뿐(토큰·시간은 동점 처리). 그렇다면 **같은 모델을 세 번 다르게 풀게 하고 네 번째가 판정**하는 자기일관성이 정답률을 올린다(수학·객관식 +3~8%p 통상). AI:GO 바이너리 확인: `create_task(title, description, assigned_to, depends_on, priority)` 지원, 의존 태스크는 **"## Context from previous tasks / ### Previous task result"** 로 선행 결과를 받음 → Judge를 마지막 태스크로 두면 "마지막 태스크"·"최종 응답" 어느 쪽이 채점돼도 Judge의 답.
+
+| 에이전트 | 모델 | 역할 |
+| --- | --- | --- |
+| Conductor | gpt-oss | 4태스크 DAG 생성(SOLVE-A/B/C → JUDGE depends_on) + 취합 통과 |
+| Solver-A | gpt-oss (Reasoning: high) | 표준 기법 |
+| Solver-B | gpt-oss (high) | **의도적으로 다른 방법**으로 독립 풀이 후 교차 검증 |
+| Solver-C | gpt-oss (high) | 검증 우선 — 후보/엣지케이스부터 검사·소거 |
+| Judge | gpt-oss (high) | 다수결, 불일치 시 직접 풀어 판정, 후보 없으면 직접 풀이(fan-out 안전망) |
+
+검증(직접 API, 러너식 템플릿): Conductor v7.1이 **4태스크 정확히 + depends_on 정확 + PLAN READY (2/2, 5라운드 내)**. 비용 ≈ 5~6 호출/문항(토큰 ~2.5×, 시간 ~3×) — 점수 우선이므로 수용. **GUI 1문항 완주로 Judge가 선행 결과를 받아 답을 내는지 확인한 뒤 제출**(실패 시 v6.2 솔로 스쿼드로 폴백).
+
 ## 🥇 새 1위 MISHULTA 0.426 판독 → v6.2 "솔로 스쿼드 + 코딩 전담" (08-23 01:15, 8/23)
 
 | | MISHULTA | 의미 |

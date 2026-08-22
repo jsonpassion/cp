@@ -51,7 +51,20 @@ flowchart LR
 - **데모(GitHub Pages)**: https://jsonpassion.github.io/bibimbap/ → `viewer/viewer.html` · `viewer/kids.html` — 플랫폼 제출 폼의 **Project Demo URL**에 사용
 - 비밀키·히든 문항 데이터 없음(푸시 전 스캔 완료). kids.html 실전 재생은 완성 후 재푸시
 
-### 🏁 최종 제출 세트 — **v6.2 솔로 스쿼드** (08-23 01:15) — 에이전트 2개, 전원 gpt-oss
+### 🏁 최종 제출 세트 — **v7.1 앙상블 DAG** (08-23 01:20) — 에이전트 5, 전원 gpt-oss · GUI 완주 검증 후 제출
+
+| 카드 (기존 카드 이름 변경) | 파일 (`~/Documents/Developer/jxc-selfeval/submissions/`) | 설명 |
+| --- | --- | --- |
+| Conductor | `card_conductor_v7.1.txt` | `desc_conductor_v7.txt` |
+| Generic-Solver → **Solver-A** | `card_solver-a_v7.0.txt` | `desc_solver.txt` |
+| Math-Solver → **Solver-B** | `card_solver-b_v7.0.txt` | `desc_solver.txt` |
+| LCB-Coder → **Solver-C** | `card_solver-c_v7.0.txt` | `desc_solver.txt` |
+| SWE-Patcher → **Judge** | `card_judge_v7.0.txt` | `desc_judge.txt` |
+| one-shot ×3 (동일) | `oneshot_{coding,math,generic}_v4.0.txt` | |
+
+폴백: v6.2 솔로 스쿼드(아래).
+
+### (이전) v6.2 솔로 스쿼드 (08-23 01:15) — 에이전트 2개, 전원 gpt-oss
 
 | 카드 | 모델 | 파일 (`~/Documents/Developer/jxc-selfeval/submissions/`) | 설명 |
 | --- | --- | --- | --- |
