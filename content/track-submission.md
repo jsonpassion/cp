@@ -45,7 +45,37 @@ flowchart LR
 - **무시됨**(Check 경고로 확정): `settingsOverrides`(maxTokens·maxToolCalls) · `toolConfig.enabledTools`(평가는 tool-less) → GUI 저장 시 도구가 다시 켜져도 무방
 - 구조: `{squadId, squadName, initializedAt, appVersion, config: {agents: [...]}}` — 에이전트 배열은 `config.agents`
 
-### 🟢 3차(최종) 제출 세트 — v3.7b (19:35 제출 진행)
+### 🏁 최종(4차) 제출 세트 — **v3.8** (08-22 20:37 준비 완료, GUI 검증 후 제출)
+
+구성: **Conductor v3.8**(Qwen3-32B `/no_think`, 685 B) + **Generic-Solver v3.7b** + **Math·LCB·SWE v3.6** + **one-shot v2.3**(279 B, directive + "Solve this problem:"). 3차 대비 플래너 입력 −1,249 tok/문항, 솔버 동일.
+
+**① 에이전트 카드 — 복사 명령 (각 카드 편집창에 ⌘V → 전부 끝나면 Save)**
+
+| 카드 | 시스템 프롬프트 | 설명(description) |
+| --- | --- | --- |
+| Conductor (플래너 · Qwen3-32B-FP8) | `pbcopy < ~/Documents/Developer/jxc-selfeval/submissions/card_conductor_v3.8.txt` | `pbcopy < ~/Documents/Developer/jxc-selfeval/submissions/desc_conductor.txt` |
+| Generic-Solver (gpt-oss) | `pbcopy < ~/Documents/Developer/jxc-selfeval/submissions/card_generic_v3.7b.txt` | `pbcopy < ~/Documents/Developer/jxc-selfeval/submissions/desc_generic.txt` |
+| Math-Solver (gpt-oss) | `pbcopy < ~/Documents/Developer/jxc-selfeval/submissions/card_math_v3.6.txt` | `pbcopy < ~/Documents/Developer/jxc-selfeval/submissions/desc_math.txt` |
+| LCB-Coder (gpt-oss) | `pbcopy < ~/Documents/Developer/jxc-selfeval/submissions/card_lcb_v3.6.txt` | `pbcopy < ~/Documents/Developer/jxc-selfeval/submissions/desc_lcb.txt` |
+| SWE-Patcher (gpt-oss) | `pbcopy < ~/Documents/Developer/jxc-selfeval/submissions/card_swe_v3.6.txt` | `pbcopy < ~/Documents/Developer/jxc-selfeval/submissions/desc_swe.txt` |
+
+(솔버 4장은 19:19 저장본과 동일하므로 **Conductor만 교체**해도 됨. 설명 필드는 선택.)
+
+**② GUI 검증 (Save 후 1문항씩 3회 → `analyze_run.py` 태스크 1·담당 정확)**: `pbcopy < ~/Documents/Developer/jxc-selfeval/gui_math_lean.txt` · `gui_generic_lean.txt` · `gui_coding_lean.txt`
+
+**③ 제출 폼 4칸 — 복사 명령**
+
+| 칸 | 명령 |
+| --- | --- |
+| Your squad's .squad.json | `python3 ~/Documents/Developer/jxc-selfeval/check_squad.py --copy` (판정 ✅ 확인 후 붙여넣기) |
+| One-shot — coding | `pbcopy < ~/Documents/Developer/jxc-selfeval/submissions/oneshot_coding_v2.3.txt` |
+| One-shot — math | `pbcopy < ~/Documents/Developer/jxc-selfeval/submissions/oneshot_math_v2.3.txt` |
+| One-shot — generic | `pbcopy < ~/Documents/Developer/jxc-selfeval/submissions/oneshot_generic_v2.3.txt` |
+
+→ Check without submitting ("No problems found") → Submit to the queue (3차가 실행으로 넘어가 대기 슬롯이 비면).
+
+### 3차 제출 세트 — v3.7b (18:44 이후 큐 대기)
+ (19:35 제출 진행)
 
 | 파일 (`jxc-selfeval/submissions/`) | 내용 | 폼 칸 |
 | --- | --- | --- |
