@@ -107,4 +107,5 @@ flowchart LR
 - [x] STEP 2 one-shot 3종 v2(directive 포함) · Check 통과 · **1차 제출 실행 중**
 - [x] STEP 3 리허설 도구: selfeval quick.sh(부트스트랩 CI) + analyze_run.py
 - [x] STEP 5 시각화 뷰어 v1 완성 (bibimbap/viewer)
-- [ ] STEP 4 2차 제출(v3.2 스쿼드) · STEP 6 최종 제출
+- [x] STEP 4 2차 제출 18:44 (v3.5) · **3차(최종) 제출 19:35 (v3.7b)**
+- [ ] STEP 5 시각화 뷰어 v3 구현(설계 패널 완료, 구현 중) · STEP 6 피치덱·리포·플랫폼 제출(8/23 11:30)

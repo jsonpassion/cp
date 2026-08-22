@@ -45,10 +45,27 @@ flowchart LR
 - **무시됨**(Check 경고로 확정): `settingsOverrides`(maxTokens·maxToolCalls) · `toolConfig.enabledTools`(평가는 tool-less) → GUI 저장 시 도구가 다시 켜져도 무방
 - 구조: `{squadId, squadName, initializedAt, appVersion, config: {agents: [...]}}` — 에이전트 배열은 `config.agents`
 
-### 2차 제출 완료 (18:44, v3.5) → 3차(최종) = v3.6
+### 🟢 3차(최종) 제출 세트 — v3.7b (19:35 제출 진행)
+
+| 파일 (`jxc-selfeval/submissions/`) | 내용 | 폼 칸 |
+| --- | --- | --- |
+| `3rd_v3.7b.squad.json` | 19:19 저장본 · 17,432 bytes · Conductor **Qwen3-32B `/no_think`**(프롬프트 v3.4) + Generic-Solver **v3.7b**(private reasoning, 140문항 80.9%) + Math·LCB·SWE **v3.6**(답만 출력) · 전원 도구 무효·메모리 OFF | Your squad's .squad.json |
+| `oneshot_coding_v2.2.txt` (1,251 B) · `oneshot_math_v2.2.txt` (1,142 B) · `oneshot_generic_v2.2.txt` (1,044 B) | [PLANNING DIRECTIVE] + [FINAL RESPONSE RULE] + [SOLVING INSTRUCTIONS] + "Solve this problem:" + `{{TASK}}` | One-shot 3칸 |
+
+검증 근거: 3트랙 GUI 완주 태스크 1 (math·generic·coding, `/no_think` 후 재확인) · 플래너 2턴 61 tok · 솔버 부트스트랩 generic 80.9% / math 100% / LCB 90% · Check 경고 15건(평가 미전달 계열만).
+
+### 제출 이력
+
+| 차수 | 시각 | 스쿼드 | one-shot | 비고 |
+| --- | --- | --- | --- | --- |
+| 1차 | 8/22 14시 | v2 (8 agents, gpt-oss 플래너, 중복 분해) | v2 | 판독 대기 — 채점 경로·가중치 확인용 |
+| 2차 | 18:44 | v3.5 (5 agents, Qwen3 플래너 thinking, Generic에 Confidence 줄 잔존) | v2.1 | 큐 배치 처리 대기 |
+| **3차 (최종)** | **19:35** | **v3.7b** | **v2.2** | 위 세트 |
+
+### (이전) 2차 제출 완료 (18:44, v3.5)
 
 - 2차: `.squad.json` 17:52본(Qwen3 플래너) + one-shot v2.1 → 큐 진입. 백업 `jxc-selfeval/submissions/2nd_v3.5_1844.squad.json`
-- 3차(최종): 솔버 4종 프롬프트 v3.6(답만 출력) 적용 → Save → `check_squad.py --copy` → one-shot **v2.2** 3칸 재붙여넣기 → Check → Submit (2차가 실행으로 넘어가 대기 슬롯이 비면)
+- 3차(최종): 위 v3.7b 세트로 제출 진행
 
 ### 현재 파일 상태 (check_squad.py, 8/22 17:52 저장본 = **v3.5**) — ✅ 제출 가능
 
