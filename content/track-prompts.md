@@ -1,6 +1,6 @@
 # ✍️ Squad v3.7 — 로스터 5종 · Qwen3 플래너(/no_think) + gpt-oss 솔버 · 답만 출력
 
-> 🟢 **v3.7b (08-22 19:14)** — Generic-Solver 추론 문구 교체: 답만 출력(v3.6)으로 바꾸자 추론이 줄어 정확도 신호가 떨어짐(같은 20문항: v3.1 65% · v3.6 55% · 예산 문구 제거 65% · **"private reasoning은 충분히, 표시는 한 줄" 73.7%**, +110 tok). 후자 채택. 140문항 확인 측정 진행 중.
+> 🟢 **v3.7b (08-22 19:14)** — Generic-Solver 추론 문구 교체: 답만 출력(v3.6)으로 바꾸자 추론이 줄어 정확도 신호가 떨어짐(같은 20문항: v3.1 65% · v3.6 55% · 예산 문구 제거 65% · **"private reasoning은 충분히, 표시는 한 줄" 73.7%**, +110 tok). 후자 채택. **140문항 확인: 80.9% (CI90 75–87%) — v3.1 78.6% 이상, 확정.**
 >
 > 🔵 **v3.7 (08-22 19:12)** — **Conductor 프롬프트 첫 줄에 `/no_think`** (Qwen3 thinking 모드 끄기). 직접 API 실측(같은 generic 요청): thinking ON = 17.4s · 출력 1,229 tok(추론 1,222) · **create_task 0회, 스스로 답함(오답 G)** / `/no_think` = **1.1s · 출력 54 tok · create_task 1회(Generic-Solver)**. 라우터 통계로 본 Qwen3 플래너 호출 평균 출력 ~590 tok → 문항당 플래너 비용 ≈ 2.4K 절감(실행 단계 전체보다 큼). **GUI 작업: Conductor 프롬프트 맨 위에 `/no_think` 한 줄 추가 → Save → math·generic·coding 1문항씩 완주로 태스크 1 유지 확인.**
 >
