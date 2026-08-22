@@ -1,5 +1,5 @@
 {
-  "version": 11,
+  "version": 12,
   "tabs": [
     {
       "id": "overview",
@@ -67,6 +67,11 @@
           "id": "mission",
           "label": "미션 분석",
           "file": "track-mission.md"
+        },
+        {
+          "id": "aigo",
+          "label": "AI:GO 가이드",
+          "file": "track-aigo.md"
         },
         {
           "id": "scoring",

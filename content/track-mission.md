@@ -48,16 +48,18 @@ flowchart LR
     SUB --> LB["실시간 리더보드"]
 ```
 
-## 제출 시스템
+## 제출 시스템 (팀 계정 확인 완료, 2026-08-22)
 
 **🔗 https://submission.jxc.events.lablup.ai:8444**
 
-- 제출물: **Squad Template JSON** + 트랙별 **one-shot prompt**
-- **Check(검증)는 무료이며 원하는 만큼 반복 가능** — Submit을 누르기 전까지 큐에 들어가지 않음
-- 대기 제출 **최대 3개**, 동시 실행 **1개** (팀당 한 번에 하나의 평가만 실행, 나머지는 대기)
+- 제출물: 워크스페이스 루트의 **`.squad.json` 원본 통째로** (≤1MiB, 에이전트 ≤50, **"planner" 역할 1개 필수**) + 트랙별(coding/math/generic) **one-shot prompt** (각각 리터럴 `{{TASK}}` 필수, ≤32KB)
+- **Check(검증)는 무료·무제한** — 큐 점유·쿨다운 없음. Submit도 같은 검증을 먼저 통과해야 큐 진입
+- 큐 제약(실측): **대기 1개 · 실행 1개** (키노트의 "대기 3개"보다 타이트함 — 실계정 기준이 우선)
+- ⚠️ Squad Template JSON은 제출물이 아님 — **AI:GO에서 Squad를 실제 생성**해 만들어진 `.squad.json`을 제출
+- 사이트 시간은 **UTC** 표시 (KST−9 주의)
 - 탭 구성: Team home / Submit / Runs / Development keys / Development usage / Leaderboard
-- **실시간 리더보드 공개** — 전 참가팀의 벤치마크 결과가 공개 표시됨
-- Run 단위 상세 조회 가능: 각 벤치마크 실행의 최종 점수 + 실행 중 모델별 사용 토큰 수
+- **실시간 리더보드 공개**, Run 단위로 점수 + 모델별 토큰 상세 조회 가능
+- ✅ **dev key 발급 완료** — 상세 사용법은 [AI:GO 가이드] 탭
 
 ## 온보딩 세션 (확정)
 
