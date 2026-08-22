@@ -51,7 +51,20 @@ flowchart LR
 - **데모(GitHub Pages)**: https://jsonpassion.github.io/bibimbap/ → `viewer/viewer.html` · `viewer/kids.html` — 플랫폼 제출 폼의 **Project Demo URL**에 사용
 - 비밀키·히든 문항 데이터 없음(푸시 전 스캔 완료). kids.html 실전 재생은 완성 후 재푸시
 
-### 🏁 최종(4차) 제출 세트 — **v4.0** (v3.9 + Math-Solver `Reasoning: high`) (08-22 20:37 준비 완료, GUI 검증 후 제출)
+### 🏁 최종(5차) 제출 세트 — **v5.0** (08-23 00:55) — 플래너 gpt-oss 복귀 · SWE-Patcher EXAONE · one-shot v2.4
+
+| 카드 | 모델 | 프롬프트 파일 (`jxc-selfeval/submissions/`) |
+| --- | --- | --- |
+| Conductor (플래너) | **furiosa-ai/gpt-oss-120b** (Qwen3 → 변경) | `card_conductor_v5.0.txt` (lean + 취합 규칙) |
+| Generic-Solver | gpt-oss-120b | `card_generic_v3.9.txt` |
+| Math-Solver | gpt-oss-120b | `card_math_v4.0.txt` (Reasoning: high) |
+| LCB-Coder | gpt-oss-120b | `card_lcb_v3.9.txt` |
+| SWE-Patcher | **furiosa-ai/K-EXAONE-236B-A23B-NVFP4A16** (변경) | `card_swe_v5.0.txt` (= v3.9 본문) |
+| one-shot ×3 | — | `oneshot_{coding,math,generic}_v2.4.txt` |
+
+근거·판독은 인사이트 탭 "리더보드 2차 판독". 검증: 직접 API 플래너 시뮬 6/6 create_task 1 · 취합 통과 3/3.
+
+### (이전) 4차 제출 세트 — **v4.0** (v3.9 + Math-Solver `Reasoning: high`) (08-22 20:37 준비 완료, GUI 검증 후 제출)
 
 구성: **Conductor v3.8**(Qwen3-32B `/no_think`, 685 B) + **솔버 4종 v3.9**(v3.7b/v3.6 + 마지막 규칙 "도구 없음 · 전문 밖 문제도 REQUIRED OUTPUT으로 풀기") + **one-shot v2.3**(279 B, directive + "Solve this problem:"). 3차 대비 플래너 입력 −1,249 tok/문항, 솔버 동일.
 
