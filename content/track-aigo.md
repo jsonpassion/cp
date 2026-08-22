@@ -74,6 +74,15 @@ curl http://127.0.0.1:39080/v1/models -H "X-API-Key: YOUR_ACCESS_KEY"
 
 → `jxc-selfeval`을 이 주소로 돌리면 AI:GO에 연결된 모델(RNGD 엔드포인트 포함)로 연습 세트를 채점할 수 있음.
 
+## 트러블슈팅 (실전에서 겪은 것들)
+
+| 증상 | 원인 | 해결 |
+| --- | --- | --- |
+| 프로바이더 연결 테스트 "라우터 실패" | Base URL 오입력 (`hub...:8446`은 연결 불가) | **`https://submission.jxc.events.lablup.ai:8445`** + 타입 vLLM |
+| "The local router is not running" | 내장 라우터(continuum) 미기동 | 설정 **API > General → TCP 서버 활성화** (포트 39080 기본, 외부 액세스는 OFF 유지) |
+| 헤드리스 aigo-server에서 "Cannot spawn router without an initialized runtime" → 스쿼드 0토큰 정지 | Continuum Router가 별도 미배포 상태라 헤드리스 환경에 런타임 없음 (라우터 상태 starting으로 래치, start/stop API가 no-op) | **데스크톱 모드 사용** (Lablup 공식 안내). deb 패키지는 8/22 오후 공유 예정 — 우리 팀은 데스크톱 모드라 무관 |
+| 대형 문항을 채팅창에 붙여넣으면 글자수 제한 에러 | GUI 입력창 제한 (SWE 문항 66KB) | 채팅창은 실평가 경로 아님 — API 호출(selfeval)·Check·Test run으로 리허설 |
+
 ## 제출 폼 스펙 (제출 사이트 확정)
 
 | 항목 | 규칙 |
