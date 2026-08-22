@@ -45,6 +45,12 @@ flowchart LR
 - **무시됨**(Check 경고로 확정): `settingsOverrides`(maxTokens·maxToolCalls) · `toolConfig.enabledTools`(평가는 tool-less) → GUI 저장 시 도구가 다시 켜져도 무방
 - 구조: `{squadId, squadName, initializedAt, appVersion, config: {agents: [...]}}` — 에이전트 배열은 `config.agents`
 
+### 🌐 공개 리포 · 데모 URL (8/22 23:3x 생성)
+
+- **리포**: https://github.com/jsonpassion/bibimbap (public, MIT) — viewer.html(Trace Viewer v3) · kids.html(의인화 그림책) · traces(공개 연습 세트 로컬 완주 로그만) · normalize.py · analyze_run.py · test.js · docs
+- **데모(GitHub Pages)**: https://jsonpassion.github.io/bibimbap/ → `viewer/viewer.html` · `viewer/kids.html` — 플랫폼 제출 폼의 **Project Demo URL**에 사용
+- 비밀키·히든 문항 데이터 없음(푸시 전 스캔 완료). kids.html 실전 재생은 완성 후 재푸시
+
 ### 🏁 최종(4차) 제출 세트 — **v4.0** (v3.9 + Math-Solver `Reasoning: high`) (08-22 20:37 준비 완료, GUI 검증 후 제출)
 
 구성: **Conductor v3.8**(Qwen3-32B `/no_think`, 685 B) + **솔버 4종 v3.9**(v3.7b/v3.6 + 마지막 규칙 "도구 없음 · 전문 밖 문제도 REQUIRED OUTPUT으로 풀기") + **one-shot v2.3**(279 B, directive + "Solve this problem:"). 3차 대비 플래너 입력 −1,249 tok/문항, 솔버 동일.
