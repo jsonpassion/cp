@@ -1,5 +1,37 @@
 # ✍️ Squad v3.7 — 로스터 5종 · Qwen3 플래너(/no_think) + gpt-oss 솔버 · 답만 출력
 
+> 🟢 **v3.8 lean 확정 (08-22 20:31) — 4차 후보**: **Conductor 685 B + one-shot v2.3(279 B)**, 솔버 페르소나는 v3.7b/v3.6 그대로(압축판은 LCB 90→85%로 한 문항 손해·출력 +267 tok → 기각). 측정: 플래너 입력 2,590 → 1,341 tok/문항(create_task 3/3 = 1), 솔버 정확도 동일(페르소나 불변). 문항당 전체 추정 ≈ 3,500 → **≈ 2,050 tok**. GUI 작업: Conductor 프롬프트만 교체 → Save → math·generic·coding 1문항씩 완주(태스크 1 확인) → 4차 제출(대기 슬롯이 비면).
+>
+> **Conductor v3.8 (카드 통째 교체)**
+> ```
+> /no_think
+> You are Conductor, the planner. Every request is ONE benchmark problem for ONE specialist.
+> Create exactly one task with one create_task call: title "SOLVE", assignee as named in the [PLANNING DIRECTIVE] (otherwise: multiple-choice question → Generic-Solver; math problem → Math-Solver; algorithmic coding problem → LCB-Coder; repository issue/patch → SWE-Patcher), description "Solve the problem completely and output only the final answer in the required format."
+> Never create zero tasks (that broadcasts the request to every agent) and never more than one (no extraction, analysis, review, or duplicate tasks). After the tool result, reply with exactly: PLAN READY
+> ```
+>
+> **one-shot v2.3 — math**
+> ```
+> [PLANNING DIRECTIVE] ONE atomic benchmark problem: create EXACTLY ONE task — title "SOLVE", assignee Math-Solver, description "Solve the problem completely and output only the final answer in the required format." No other tasks, no other agents.
+> 
+> Solve this problem:
+> {{TASK}}
+> ```
+> **one-shot v2.3 — generic**
+> ```
+> [PLANNING DIRECTIVE] ONE atomic benchmark problem: create EXACTLY ONE task — title "SOLVE", assignee Generic-Solver, description "Solve the problem completely and output only the final answer in the required format." No other tasks, no other agents.
+> 
+> Solve this problem:
+> {{TASK}}
+> ```
+> **one-shot v2.3 — coding**
+> ```
+> [PLANNING DIRECTIVE] ONE atomic benchmark problem: create EXACTLY ONE task — title "SOLVE", assignee LCB-Coder for an algorithmic problem with examples/tests or SWE-Patcher for a repository issue/patch, description "Solve the problem completely and output only the final answer in the required format." No other tasks, no other agents.
+> 
+> Solve this problem:
+> {{TASK}}
+> ```
+>
 > 🧭 **설계 원칙 확정 (08-22 20:27, 운영진 힌트 반영)** — "one-shot의 지시 부분은 아주 자세히 써도, 아주 간단히 써도 되며 **서브에이전트 페르소나와 결합**해 결과가 달라진다." 우리 결론: one-shot은 **플래너 2턴 + 솔버 1회 = 문항마다 3번 읽히는 비용**이고 페르소나는 호출당 1번(prefix 캐시). → **지시는 one-shot에 한 줄("Solve this problem:" + 배정 directive), 디테일은 페르소나에.** 이것이 v3.8 lean의 근거이며, 측정(플래너 −1,249 tok/문항 실측, 솔버 정확도 부트스트랩 진행 중) 후 확정.
 >
 > 🟢 **v3.7b (08-22 19:14)** — Generic-Solver 추론 문구 교체: 답만 출력(v3.6)으로 바꾸자 추론이 줄어 정확도 신호가 떨어짐(같은 20문항: v3.1 65% · v3.6 55% · 예산 문구 제거 65% · **"private reasoning은 충분히, 표시는 한 줄" 73.7%**, +110 tok). 후자 채택. **140문항 확인: 80.9% (CI90 75–87%) — v3.1 78.6% 이상, 확정.**
