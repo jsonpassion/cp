@@ -138,6 +138,21 @@ Receipt 화면의 증거 한 줄: **같은 문항(math-visible-0001) 단독 gpt-
 
 다음 레버는 운영진 힌트의 나머지 절반, **플래너 모델 교체** — Conductor만 Qwen3-32B로 바꿔 같은 요청 3회(개수 분포 비교). 3/3 = 1이면 채택, 아니면 gpt-oss 유지하고 변동성(평균 ≈2.5K/문항)을 감수하고 제출.
 
+## 📦 솔버의 답은 어디에 저장되나 — "파일에는 없다" (8/22 18시 확인)
+
+v3.4 완주(561c0163)의 모든 산출물을 뒤진 결과, **전문가가 낸 `\boxed{\frac{11}{2}}` 텍스트는 워크스페이스 어디에도 기록되지 않는다.**
+
+| 위치 | 내용 | 답 포함? |
+| --- | --- | --- |
+| `tasks/<id>.json` | 상태·담당·시각, `"result": null`, `tokenUsage: 0` | ❌ |
+| `tasks/<id>.md` | 설명 + Progress Log("Started / Done") | ❌ |
+| `artifacts/reports/<exec>-report.md` | 요약표 + Final Result = 런타임 템플릿("Execution complete — N task(s)") | ❌ |
+| `logs/events.jsonl` | 상태 전이·토큰 수(execution-token-usage) | ❌ |
+| `logs/<exec>.jsonl` | "Task 'SOLVE' completed by 'Math-Solver'" 같은 상태 문장 9줄 | ❌ |
+| 앱 `conversations/*.json` | 16:49 **채팅 모드**(mode: chat)로 직접 물었던 기록에만 `\boxed{\frac{11}{2}}` 존재 | 스쿼드 아님 |
+
+즉 답은 **실행 중 메모리(GUI 활동 피드 · `get_execution_detail`)** 에만 존재하고, 평가 러너는 자체 하네스로 에이전트 응답 이벤트를 받아 채점할 수밖에 없다. 따름정리: ① 취합 프롬프트·FINAL RESPONSE RULE은 result 문자열에 관여하지 않음(템플릿 고정) ② **러너가 어느 응답을 채점하는지는 1차 런 점수만이 증명** ③ 뷰어는 토큰·타임라인·라우팅은 로그로 재생하되, 답 텍스트는 로그에 없다는 사실 자체를 Receipt에 명시(정직한 Traceability).
+
 ## 🧪 독립 설계 패널 결과 (8/22 17:40, 3개 렌즈 → 적대적 검증 → 종합)
 
 비용 우선·정확도 우선·견고성 우선 세 설계를 독립적으로 만들고 서로 반박시킨 결과:
