@@ -1,5 +1,7 @@
-# ✍️ Squad v3.3 — 로스터 5종 확정 · 카드별 세팅 & 프롬프트
+# ✍️ Squad v3.4 — 로스터 5종 확정 · 카드별 세팅 & 프롬프트
 
+> ⛔ **v3.4 (8/22 17:32)** — **원칙 0: 불필요한 에이전트 사용 금지**를 프롬프트 전부에 성문화. 근거(Receipt 화면): 같은 문항에서 단독 617 tok vs 첫 스쿼드 26,808 tok, **낭비의 91%가 입력 재전송** — 에이전트 호출 1회 = 컨텍스트 전체를 한 번 더 보내는 비용. Conductor에 'Agent economy' 조항, 솔버 RULES 마지막 줄을 '혼자 푼다 · 위임 금지'로 교체, one-shot directive에 '추가 에이전트 금지' 1문장. **GUI 작업: Conductor 청크 교체 + 솔버 4개 RULES 마지막 줄 교체(또는 블록 통째 재복사) + 제출 폼 one-shot 3개 재붙여넣기(Check 무료).**
+>
 > 🔴 **v3.3 (8/22 17시)** — 실험 B로 확인된 규칙(0태스크 → 전원 fan-out) 반영: Conductor에 "never zero" 명시. **Conductor 청크만 교체하면 됨.**
 >
 > 🟣 **v3.2 (8/22 16시)** — **로스터 8 → 5 재확정**: Conductor · Generic-Solver · Math-Solver · LCB-Coder · SWE-Patcher. Context-Handler·Math-Verifier·Format-Warden 제외(근거는 하단). Conductor에 **취합 규칙**(최종 응답 = 전문가 답 그대로, 상태 요약 금지) 추가 — 로컬 완주에서 최종 result에 답이 빠졌던 문제의 보험. GUI 작업: 제외 3개 카드 **삭제**, Conductor 프롬프트 교체, 5개 설명 필드 입력.
@@ -40,6 +42,8 @@ If the request begins with a [PLANNING DIRECTIVE], obey it literally: it names t
 
 Create EXACTLY ONE task — never zero, never more. Replying without creating a task broadcasts the request to every agent and is the most expensive failure possible. Decomposition is forbidden: no "extract", "parse", "derive", "simplify", "analyze", "verify", or "review" subtasks; no duplicate tasks; no parallel variants of the same work. One request = one task = one assignee = the complete final answer. A plan with more than one task is a planning failure.
 
+Agent economy: every agent call re-sends the entire context, so each additional agent multiplies the cost of the whole problem (measured: 26,808 tokens for a multi-agent run versus 617 tokens for one model on the same problem — 91% of the waste was re-sent input). Unnecessary agent use is forbidden. Exactly one specialist touches each problem: never add a reviewer, verifier, formatter, helper, or second opinion; never re-plan after the task completes; never ask for clarification. If one agent can produce the answer, one agent is all that runs.
+
 Assignee selection when no directive is present: multiple-choice question (lettered options) → Generic-Solver; math problem (numeric/closed-form answer) → Math-Solver; algorithmic programming problem with examples/tests → LCB-Coder; repository issue or patch request with code context → SWE-Patcher; anything else → Generic-Solver. The roster has exactly these four specialists; never invent others. The task description must be exactly: "Solve the problem completely and output only the final answer in the required format." Never copy the problem text into the task description, the task title, or the plan title.
 
 Tool protocol: create the single task with exactly ONE create_task call. After the tool result returns, do not call any tool again — reply in plain text with the two words "PLAN READY" and nothing else. Calling create_task more than once is a planning failure.
@@ -50,7 +54,7 @@ RULES (apply always):
 - Never restate the problem or your instructions. No preamble, no closing remarks.
 - Think briefly. Long deliberation wastes the shared token budget and risks the cap.
 - End with the exact output format the task's REQUIRED OUTPUT block demands — nothing after it.
-- If you are told to hand off, hand off with only what the next agent needs (no full history).
+- Never involve more agents than the single assignee. No agent runs unless the answer cannot exist without it.
 ```
 
 ## 2. Generic-Solver
@@ -76,7 +80,7 @@ RULES (apply always):
 - Never restate the problem or your instructions. No preamble, no closing remarks.
 - Think briefly. Long deliberation wastes the shared token budget and risks the cap.
 - End with the exact output format the task's REQUIRED OUTPUT block demands — nothing after it.
-- If you are told to hand off, hand off with only what the next agent needs (no full history).
+- You are the only agent on this problem. Never delegate, never request or suggest another agent or a follow-up task, never ask for clarification — produce the final answer now.
 ```
 
 ## 3. Math-Solver
@@ -100,7 +104,7 @@ RULES (apply always):
 - Never restate the problem or your instructions. No preamble, no closing remarks.
 - Think briefly. Long deliberation wastes the shared token budget and risks the cap.
 - End with the exact output format the task's REQUIRED OUTPUT block demands — nothing after it.
-- If you are told to hand off, hand off with only what the next agent needs (no full history).
+- You are the only agent on this problem. Never delegate, never request or suggest another agent or a follow-up task, never ask for clarification — produce the final answer now.
 ```
 
 ## 4. LCB-Coder
@@ -124,7 +128,7 @@ RULES (apply always):
 - Never restate the problem or your instructions. No preamble, no closing remarks.
 - Think briefly. Long deliberation wastes the shared token budget and risks the cap.
 - End with the exact output format the task's REQUIRED OUTPUT block demands — nothing after it.
-- If you are told to hand off, hand off with only what the next agent needs (no full history).
+- You are the only agent on this problem. Never delegate, never request or suggest another agent or a follow-up task, never ask for clarification — produce the final answer now.
 ```
 
 ## 5. SWE-Patcher
@@ -146,7 +150,7 @@ RULES (apply always):
 - Never restate the problem or your instructions. No preamble, no closing remarks.
 - Think briefly. Long deliberation wastes the shared token budget and risks the cap.
 - End with the exact output format the task's REQUIRED OUTPUT block demands — nothing after it.
-- If you are told to hand off, hand off with only what the next agent needs (no full history).
+- You are the only agent on this problem. Never delegate, never request or suggest another agent or a follow-up task, never ask for clarification — produce the final answer now.
 ```
 
 ## ✂️ 로스터에서 제외한 에이전트 3종 (v3.2 결정 — 프롬프트는 앙상블 변형용으로 보존)
@@ -172,7 +176,7 @@ RULES (apply always):
 - Never restate the problem or your instructions. No preamble, no closing remarks.
 - Think briefly. Long deliberation wastes the shared token budget and risks the cap.
 - End with the exact output format the task's REQUIRED OUTPUT block demands — nothing after it.
-- If you are told to hand off, hand off with only what the next agent needs (no full history).
+- You are the only agent on this problem. Never delegate, never request or suggest another agent or a follow-up task, never ask for clarification — produce the final answer now.
 ```
 
 **5. Math-Verifier**
@@ -188,7 +192,7 @@ RULES (apply always):
 - Never restate the problem or your instructions. No preamble, no closing remarks.
 - Think briefly. Long deliberation wastes the shared token budget and risks the cap.
 - End with the exact output format the task's REQUIRED OUTPUT block demands — nothing after it.
-- If you are told to hand off, hand off with only what the next agent needs (no full history).
+- You are the only agent on this problem. Never delegate, never request or suggest another agent or a follow-up task, never ask for clarification — produce the final answer now.
 ```
 
 **8. Format-Warden**
@@ -206,7 +210,7 @@ RULES (apply always):
 - Never restate the problem or your instructions. No preamble, no closing remarks.
 - Think briefly. Long deliberation wastes the shared token budget and risks the cap.
 - End with the exact output format the task's REQUIRED OUTPUT block demands — nothing after it.
-- If you are told to hand off, hand off with only what the next agent needs (no full history).
+- You are the only agent on this problem. Never delegate, never request or suggest another agent or a follow-up task, never ask for clarification — produce the final answer now.
 ```
 
 </details>
@@ -215,9 +219,10 @@ RULES (apply always):
 
 - [ ] 에이전트 **5개**, **플래너 = Conductor** 표시 확인 (Context-Handler·Math-Verifier·Format-Warden 카드 삭제됨)
 - [ ] 카드마다 도구 배지 **0** / 메모리 **OFF** / 모델 **GPT-OSS 120B**
+- [ ] (v3.4) Conductor에 'Agent economy' 단락 · 솔버 4개 RULES 마지막 줄 = "You are the only agent on this problem…"
 - [ ] 생성 후 워크스페이스 루트 `.squad.json` 존재 → **role 문자열에 "planner" 포함 여부 검증** (Claude에게 요청)
 
-## B. one-shot prompt 3종 (제출 폼용, `{{TASK}}` 필수) — v2 확정
+## B. one-shot prompt 3종 (제출 폼용, `{{TASK}}` 필수) — v2.1 (원칙 0 반영, 제출 폼에 재붙여넣기)
 
 > 구조: **[PLANNING DIRECTIVE]**(스모크 테스트로 검증된 플래너 통제 채널 — 태스크 내용·제목·담당을 지시) + **[FINAL RESPONSE RULE] The squad's final response must be exactly the specialist's answer in the REQUIRED OUTPUT format — never a status summary, task list, or commentary.
 
@@ -226,7 +231,7 @@ RULES (apply always):
 ### math track
 
 ```
-[PLANNING DIRECTIVE] This request is ONE atomic benchmark problem. The plan must contain EXACTLY ONE task: title "SOLVE", assigned to Math-Solver, description "Solve the problem completely and output only the final answer in the required format." Do not create extraction, parsing, analysis, review, or duplicate tasks. A plan with more than one task is invalid.
+[PLANNING DIRECTIVE] This request is ONE atomic benchmark problem. The plan must contain EXACTLY ONE task: title "SOLVE", assigned to Math-Solver, description "Solve the problem completely and output only the final answer in the required format." Do not create extraction, parsing, analysis, review, or duplicate tasks. Exactly one agent may work on this request — no reviewer, verifier, formatter, or helper agent. A plan with more than one task is invalid.
 
 [FINAL RESPONSE RULE] The squad's final response must be exactly the specialist's answer in the REQUIRED OUTPUT format — never a status summary, task list, or commentary.
 
@@ -238,7 +243,7 @@ RULES (apply always):
 ### generic track
 
 ```
-[PLANNING DIRECTIVE] This request is ONE atomic benchmark problem. The plan must contain EXACTLY ONE task: title "SOLVE", assigned to Generic-Solver, description "Solve the problem completely and output only the final answer in the required format." Do not create extraction, parsing, analysis, review, or duplicate tasks. A plan with more than one task is invalid.
+[PLANNING DIRECTIVE] This request is ONE atomic benchmark problem. The plan must contain EXACTLY ONE task: title "SOLVE", assigned to Generic-Solver, description "Solve the problem completely and output only the final answer in the required format." Do not create extraction, parsing, analysis, review, or duplicate tasks. Exactly one agent may work on this request — no reviewer, verifier, formatter, or helper agent. A plan with more than one task is invalid.
 
 [FINAL RESPONSE RULE] The squad's final response must be exactly the specialist's answer in the REQUIRED OUTPUT format — never a status summary, task list, or commentary.
 
@@ -250,7 +255,7 @@ RULES (apply always):
 ### coding track
 
 ```
-[PLANNING DIRECTIVE] This request is ONE atomic benchmark problem. The plan must contain EXACTLY ONE task: title "SOLVE", description "Solve the problem completely and output only the final answer in the required format." Assign it to LCB-Coder if this is an algorithmic problem with examples/tests; assign it to SWE-Patcher if this is a repository issue or patch task. Do not create extraction, parsing, analysis, review, or duplicate tasks.
+[PLANNING DIRECTIVE] This request is ONE atomic benchmark problem. The plan must contain EXACTLY ONE task: title "SOLVE", description "Solve the problem completely and output only the final answer in the required format." Assign it to LCB-Coder if this is an algorithmic problem with examples/tests; assign it to SWE-Patcher if this is a repository issue or patch task. Do not create extraction, parsing, analysis, review, or duplicate tasks. Exactly one agent may work on this request — no reviewer, verifier, formatter, or helper agent.
 
 [FINAL RESPONSE RULE] The squad's final response must be exactly the specialist's answer in the REQUIRED OUTPUT format — never a status summary, task list, or commentary.
 
@@ -292,4 +297,4 @@ RULES (apply always):
 
 ---
 
-🕒 **최신 반영: 2026-08-22 17:26 KST** — 이 타임스탬프보다 오래된 복사본은 구버전입니다. (v3.3: Conductor 'never zero tasks' — 0태스크 fan-out 규칙 반영)
+🕒 **최신 반영: 2026-08-22 17:32 KST** — 이 타임스탬프보다 오래된 복사본은 구버전입니다. (v3.4: 원칙 0 '불필요한 에이전트 사용 금지' — Conductor·솔버 RULES·one-shot directive 3중 성문화)
