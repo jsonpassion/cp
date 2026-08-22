@@ -1,5 +1,5 @@
 {
-  "version": 19,
+  "version": 20,
   "tabs": [
     {
       "id": "overview",
@@ -67,6 +67,11 @@
           "id": "build",
           "label": "빌드 가이드",
           "file": "track-build.md"
+        },
+        {
+          "id": "prompts",
+          "label": "프롬프트 초안",
+          "file": "track-prompts.md"
         },
         {
           "id": "viz",
