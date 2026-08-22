@@ -45,6 +45,15 @@ flowchart LR
 - **무시됨**(Check 경고로 확정): `settingsOverrides`(maxTokens·maxToolCalls) · `toolConfig.enabledTools`(평가는 tool-less) → GUI 저장 시 도구가 다시 켜져도 무방
 - 구조: `{squadId, squadName, initializedAt, appVersion, config: {agents: [...]}}` — 에이전트 배열은 `config.agents`
 
+### 🎤 발표 산출물 (08/23 02:52) — `bibimbap/deck/` (리포에 푸시됨)
+
+| 파일 | 내용 |
+| --- | --- |
+| `deck.html` / **`deck.pdf` (12p)** | 피치덱 — 1 타이틀 · 2 키노트 질문/답 · 3 만든 것 · 4 43× · 5 Trace가 보여준 3가지 · 6 ÷17 · 7 측정 문화(전수 표) · 8 리더보드 교훈(누구의 마지막 말이 채점되는가) · 9 최종 v6.0 DIRECT(+ 앙상블 실험 0.045) · 10 시각화 6축 · 11 토큰 곡선(관측→절감→재투자 실험→단순화) · 12 클로징 |
+| `summary.md` | 제출 폼 요약 1,196자 |
+| `speaker-notes.md` | 4분 대본 · 장표별 타이밍 · Q&A 숫자 출처표 |
+| 편집 필요 | 9장 `final-score-value`(리더보드 최종 점수) · 12장 `team-members`(팀원 이름 — 소스에 없어 비워 둠) |
+
 ### 🌐 공개 리포 · 데모 URL (8/22 23:3x 생성)
 
 - **리포**: https://github.com/jsonpassion/bibimbap (public, MIT) — viewer.html(Trace Viewer v3) · kids.html(의인화 그림책) · traces(공개 연습 세트 로컬 완주 로그만) · normalize.py · analyze_run.py · test.js · docs
