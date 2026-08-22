@@ -108,9 +108,17 @@
   }
   main pre {
     background: var(--ink); border: var(--bw) solid var(--ink); border-radius: var(--r-md);
-    box-shadow: var(--shadow-sm); overflow-x: auto; padding: 0;
+    box-shadow: var(--shadow-sm); overflow-x: auto; padding: 0; position: relative;
   }
-  main pre code { display: block; background: none; border: none; color: #F5F0E8; padding: .9em 1.1em; font-size: .82em; }
+  main pre code { display: block; background: none; border: none; color: #F5F0E8; padding: .9em 1.1em; padding-top: 2.2em; font-size: .82em; }
+  .copy-btn {
+    position: absolute; top: .5rem; right: .55rem;
+    background: #F5F0E8; border: 2px solid #F5F0E8; color: var(--ink);
+    font: inherit; font-size: .7rem; font-weight: 700; padding: .18rem .6rem;
+    border-radius: 6px; cursor: pointer; opacity: .85;
+  }
+  .copy-btn:hover { opacity: 1; }
+  .copy-btn.done { background: var(--ok, #34d399); border-color: var(--ok, #34d399); }
   main blockquote {
     margin: 1.2em 0; padding: .8em 1.1em; background: var(--surface);
     border: var(--bw) solid var(--ink); border-left-width: 10px; border-radius: var(--r-md);
@@ -262,6 +270,31 @@ async function render() {
       t.replaceWith(box); box.appendChild(t);
     });
     await mermaid.run({ nodes: main.querySelectorAll(".mermaid") });
+    // 코드블록 복사 버튼
+    main.querySelectorAll("pre").forEach(pre => {
+      const code = pre.querySelector("code");
+      if (!code) return;
+      const btn = document.createElement("button");
+      btn.className = "copy-btn";
+      btn.textContent = "복사";
+      btn.addEventListener("click", async () => {
+        const text = code.textContent;
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch {
+          const range = document.createRange();
+          range.selectNodeContents(code);
+          const sel = getSelection();
+          sel.removeAllRanges(); sel.addRange(range);
+          document.execCommand("copy");
+          sel.removeAllRanges();
+        }
+        btn.textContent = "복사됨 ✓";
+        btn.classList.add("done");
+        setTimeout(() => { btn.textContent = "복사"; btn.classList.remove("done"); }, 1600);
+      });
+      pre.appendChild(btn);
+    });
     window.scrollTo(0, 0);
   } catch (e) {
     main.innerHTML = `<div class="loading">콘텐츠를 불러오지 못했습니다 (${e.message})<br><code>content/${curSub.file}</code> 확인</div>`;
