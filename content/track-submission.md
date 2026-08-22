@@ -51,7 +51,17 @@ flowchart LR
 - **데모(GitHub Pages)**: https://jsonpassion.github.io/bibimbap/ → `viewer/viewer.html` · `viewer/kids.html` — 플랫폼 제출 폼의 **Project Demo URL**에 사용
 - 비밀키·히든 문항 데이터 없음(푸시 전 스캔 완료). kids.html 실전 재생은 완성 후 재푸시
 
-### 🏁 최종(5차) 제출 세트 — **v5.1** (3모델 혼합: Qwen3 플래너 `/no_think`×2 · gpt-oss 솔버 · EXAONE SWE) (08-23 00:55) — 플래너 gpt-oss 복귀 · SWE-Patcher EXAONE · one-shot v2.4
+### 🏁 최종 제출 세트 — **v6.2 솔로 스쿼드** (08-23 01:15) — 에이전트 2개, 전원 gpt-oss
+
+| 카드 | 모델 | 파일 (`~/Documents/Developer/jxc-selfeval/submissions/`) | 설명 |
+| --- | --- | --- | --- |
+| Conductor (플래너, 직접 풀이) | gpt-oss-120b | `card_conductor_v6.2.txt` (4.2 KB) | `desc_conductor_v6.txt` |
+| **Coder** (사용자 정의 — LCB-Coder 카드를 이름 변경) | gpt-oss-120b | `card_coder_v6.2.txt` (3.8 KB) | `desc_coder.txt` |
+| ~~Generic-Solver · Math-Solver · SWE-Patcher~~ | — | **삭제** (fan-out 시 단일 Coder만 돌아야 함) | |
+| one-shot math · generic | — | `oneshot_math_v3.0.txt` · `oneshot_generic_v3.0.txt` (직접 풀이 지시) | |
+| one-shot coding | — | `oneshot_coding_v3.1.txt` (Coder 위임 directive + FINAL RESPONSE RULE) | |
+
+### (이전) 5차 세트 — **v5.1** (3모델 혼합: Qwen3 플래너 `/no_think`×2 · gpt-oss 솔버 · EXAONE SWE) (08-23 00:55) — 플래너 gpt-oss 복귀 · SWE-Patcher EXAONE · one-shot v2.4
 
 | 카드 | 모델 | 프롬프트 파일 (`jxc-selfeval/submissions/`) |
 | --- | --- | --- |
