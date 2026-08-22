@@ -1,44 +1,21 @@
-# 핵심 요약
+# 🏠 대시보드 — [541] BIBIMBAP (팀 CouchPotato 54-1)
 
-> 현장 슬라이드·배포물·트랙 세션을 정리한 팀 내부 문서입니다. 새 정보가 생기면 탭별 마크다운에 계속 누적합니다.
+🕒 **최신 반영: 2026-08-23 03:20 KST** — 이 페이지는 "지금 어디에 있고 오늘 뭘 하나"만 담습니다. 근거는 각 탭에.
 
-## ⏰ 놓치면 끝나는 마감
+- **리더보드**: 우리 **0.285 · 5위** (v6.0 DIRECT 런, 8/22 17:54Z) — coding 15.8 · **math 53.8 (1위 동률)** · generic 28.7. 1위 MISHULTA 0.426 (gpt-oss 단일, 2.2회/문항) · 2위 TheresNoFree 0.403 · 3위 DemoDayCare 0.393. 점수 = 트랙 정확도 가중 평균만(coding .50 · math .25 · generic .25, 문항 38/13/96) — 토큰·시간은 동점 처리, 캡 없음.
+- **6차 제출(03:1x) 채점 대기 = v6.3 DIRECT + one-shot v3.3**: generic이 새던 원인(객관식에서 플래너가 태스크로 분해, 802 요청 = 5.5/문항)에 처방한 버전. 요청 수가 ≈2/문항으로 내려오고 generic이 회복되면 성공.
+- **최종 스쿼드 = 에이전트 2, 전원 `furiosa-ai/gpt-oss-120b`, Conductor(플래너)가 직접 답한다** — `card_conductor_v6.3.txt`(분해·위임·도구 금지 + 두 경로 풀이 자기일관성, 3,393자) + `card_solver_v6.0.txt`(0태스크 fan-out 쌍둥이) + `oneshot_{coding,math,generic}_v3.3.txt`(트랙별 절차 + 문제 앞뒤로 "분해 금지·답만"). 복사 명령·GUI 세팅·검증 게이트 → [🧾 최종 제출].
+- **핵심 증거 H1**: 러너가 채점하는 텍스트 = **플래너의 계획 단계 최종 메시지**. 서브에이전트 출력은 점수에 닿지 않는다(v7.1 앙상블 0.045, 상위 3팀 공통 플래너 직접 답) → [🔍 핵심 인사이트].
+- **한 줄 메시지**: **"관측할 수 있으면 줄일 수 있다."** 관측(Trace) → 절감(26,808 → 1,611 tok, ÷17) → 재투자 실험(앙상블 12,544 tok → 0.045) → 다시 관측(누구의 마지막 말이 채점되는가) → **단순화**(2 에이전트 DIRECT → 0.285).
+- **산출물(전부 푸시됨)**: 리포 https://github.com/jsonpassion/bibimbap · 데모 https://jsonpassion.github.io/bibimbap/ (`viewer/viewer.html` v3.3 · `viewer/kids.html`) · 피치덱 `bibimbap/deck/deck.pdf`(12p) · 요약 `deck/summary.md`(1,196자) · 대본 `deck/speaker-notes.md`(4분).
 
-| 항목 | 일시 | 비고 |
+## 오늘 체크리스트 (8/23 KST)
+
+| 시각 | 할 일 | 완료 기준 |
 | --- | --- | --- |
-| 🚀 Kick-off Mission | **8/21 (금) 24:00** | `[팀번호] 프로젝트명` 형식 필수 |
-| 🏁 Final Mission | **8/23 (일) 12:00** | 지각 제출 절대 불가 |
-| 🎬 Demo Expo | 8/23 13:00–16:00 | 라이브 데모 시나리오 준비 |
-| 🎤 Final PT | 8/23 16:00–17:00 | |
-| 🗳 Peer Review | 8/23 17:00–17:30 | **전원 필수 제출** |
-
-## 제출 흐름
-
-```mermaid
-flowchart LR
-    A["킥오프 제안서<br/>8/21 24:00"] --> B["해킹<br/>~38시간"]
-    B --> C["Final 제출<br/>8/23 12:00"]
-    C --> C2["별도 폼 제출<br/>(강력 권장)"]
-    C --> D["status = final 확인"]
-    D --> E["Discord ✅-confirm-submission<br/>채널에서 확인"]
-    E --> F["Demo Expo → Final PT<br/>→ Peer Review"]
-```
-
-## 심사 구조 (Final Winner)
-
-```mermaid
-pie showData
-    title 최종 심사 가중치
-    "참가자 투표 (Peer Review)" : 60
-    "Track Partner 심사" : 40
-```
-
-- 참가자 투표가 **60%** — 데모 엑스포와 파이널 PT에서 다른 참가자들에게 남기는 인상이 절반 이상을 결정합니다.
-- 모든 Track Partner가 모든 파이널리스트를 심사합니다.
-
-## 최종 제출물 4종
-
-- [ ] **Pitch Deck (PDF, 영문)** — 전체 공개 Google Drive 링크
-- [ ] **Project Summary** — 영문 또는 국문
-- [ ] **Project Code** — GitHub 레포 링크 (오픈소스 사용 명시)
-- [ ] **Project Name** — `[팀번호]` 접두 형식
+| 지금~ | **v6.3 런 결과 판독** — Runs 탭에서 트랙별 정확도 · 요청 수 · 모델별 토큰 | generic 회복 여부, 요청 ≈2/문항 |
+| 판독 직후 | 덱 9장 `final-score-value`에 최종 점수 · 12장 `team-members` 팀원 이름 → `deck.pdf` 재생성 | PDF 12p, 숫자 = 리더보드 |
+| (여유 시) | coding(.50) 개선 — SWE 절차 강화 변형은 **러너 조건 LCB 20 회귀 확인 후에만** 적용 | 회귀 없음 |
+| **~11:30** | **플랫폼 제출**: deck.pdf(Google Drive "링크 있는 모든 사용자" — 시크릿 창 확인) · summary.md · 리포 URL · 데모 URL · status **final** 확인 · Discord `✅-confirm-submission` 스크린샷 · 별도 폼(강력 권장) | 공식 마감 12:00 — 남은 30분은 버퍼 |
+| 13:00–16:00 | Demo Expo — 뷰어 `D`(자동 루프) 켜두고 방문자에게 스크러버를 직접 만지게 (참가자 투표 60%) | 네트워크 불필요 |
+| 16:00–17:00 | Final PT (4분, `speaker-notes.md`) → **17:00–17:30 Peer Review 전원 필수 제출** | |

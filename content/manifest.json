@@ -1,170 +1,78 @@
 {
-  "version": 82,
+  "version": 90,
   "tabs": [
     {
       "id": "overview",
       "label": "🏠 대시보드",
       "subtabs": [
-        {
-          "id": "summary",
-          "label": "핵심 요약",
-          "file": "overview-summary.md"
-        }
+        { "id": "summary", "label": "오늘의 상태·체크리스트", "file": "overview-summary.md" }
       ]
     },
     {
-      "id": "missions",
-      "label": "📋 미션·규정",
+      "id": "mission",
+      "label": "🎯 미션",
       "subtabs": [
-        {
-          "id": "kickoff",
-          "label": "Kick-off",
-          "file": "missions-kickoff.md"
-        },
-        {
-          "id": "final",
-          "label": "Final",
-          "file": "missions-final.md"
-        },
-        {
-          "id": "conduct",
-          "label": "Code of Conduct",
-          "file": "missions-conduct.md"
-        },
-        {
-          "id": "judging",
-          "label": "심사·상금",
-          "file": "missions-judging.md"
-        }
+        { "id": "analysis", "label": "미션 분석", "file": "track-mission.md" },
+        { "id": "scoring", "label": "채점 기준", "file": "track-scoring.md" }
       ]
     },
     {
-      "id": "schedule",
-      "label": "🗓 일정",
+      "id": "submit",
+      "label": "🧾 최종 제출",
       "subtabs": [
-        {
-          "id": "all",
-          "label": "전체 타임라인",
-          "file": "schedule-all.md"
-        }
+        { "id": "final", "label": "최종 제출 세트", "file": "final-submission.md" },
+        { "id": "platform", "label": "플랫폼 제출 정보", "file": "track-submission.md" }
       ]
     },
     {
-      "id": "track",
-      "label": "🎯 Lablup×Furiosa",
+      "id": "insights",
+      "label": "🔍 핵심 인사이트",
       "subtabs": [
-        {
-          "id": "insights",
-          "label": "💡 핵심 인사이트",
-          "file": "track-insights.md"
-        },
-        {
-          "id": "plan",
-          "label": "작전 플랜",
-          "file": "track-plan.md"
-        },
-        {
-          "id": "build",
-          "label": "빌드 가이드",
-          "file": "track-build.md"
-        },
-        {
-          "id": "prompts",
-          "label": "프롬프트 초안",
-          "file": "track-prompts.md"
-        },
-        {
-          "id": "viz",
-          "label": "시각화·발표",
-          "file": "track-viz.md"
-        },
-        {
-          "id": "materials",
-          "label": "발표 재료",
-          "file": "track-materials.md"
-        },
-        {
-          "id": "submission",
-          "label": "제출 초안",
-          "file": "track-submission.md"
-        },
-        {
-          "id": "mission",
-          "label": "미션 분석",
-          "file": "track-mission.md"
-        },
-        {
-          "id": "aigo",
-          "label": "AI:GO 가이드",
-          "file": "track-aigo.md"
-        },
-        {
-          "id": "scoring",
-          "label": "채점 기준",
-          "file": "track-scoring.md"
-        },
-        {
-          "id": "benchmark",
-          "label": "벤치마크 구성",
-          "file": "track-benchmark.md"
-        },
-        {
-          "id": "strategy",
-          "label": "필승 전략",
-          "file": "track-strategy.md"
-        },
-        {
-          "id": "transcript",
-          "label": "트랜스크립트 번역",
-          "file": "track-transcript.md"
-        },
-        {
-          "id": "research",
-          "label": "회사 리서치",
-          "file": "track-research.md"
-        }
+        { "id": "core", "label": "핵심 인사이트", "file": "track-insights.md" }
       ]
     },
     {
-      "id": "tracks",
-      "label": "🛰 타 트랙",
+      "id": "viz",
+      "label": "🎨 시각화·발표",
       "subtabs": [
-        {
-          "id": "compare",
-          "label": "트랙 비교",
-          "file": "tracks-compare.md"
-        },
-        {
-          "id": "status",
-          "label": "정리 현황",
-          "file": "tracks-status.md"
-        },
-        {
-          "id": "microsoft",
-          "label": "Microsoft×경북",
-          "file": "tracks-microsoft.md"
-        },
-        {
-          "id": "upstage",
-          "label": "Upstage",
-          "file": "tracks-upstage.md"
-        }
+        { "id": "viewer", "label": "시각화·발표", "file": "track-viz.md" },
+        { "id": "materials", "label": "발표 재료", "file": "track-materials.md" }
       ]
     },
     {
-      "id": "venue",
-      "label": "📍 현장 정보",
+      "id": "aigo",
+      "label": "🖥 AI:GO 가이드",
       "subtabs": [
-        {
-          "id": "info",
-          "label": "WiFi·연락처·장소",
-          "file": "venue-info.md"
-        },
-        {
-          "id": "bingo",
-          "label": "BINGO",
-          "file": "venue-bingo.md"
-        }
+        { "id": "guide", "label": "AI:GO 가이드", "file": "track-aigo.md" }
+      ]
+    },
+    {
+      "id": "archive",
+      "label": "📚 아카이브",
+      "subtabs": [
+        { "id": "prompts", "label": "프롬프트 전체 이력", "file": "archive/track-prompts.md" },
+        { "id": "insights-full", "label": "인사이트 전문 (v82)", "file": "archive/track-insights-full.md" },
+        { "id": "submission-full", "label": "제출 초안 전문 (v82)", "file": "archive/track-submission-full.md" },
+        { "id": "viz-full", "label": "시각화 전문 (v82)", "file": "archive/track-viz-full.md" },
+        { "id": "materials-full", "label": "발표 재료 전문 (v82)", "file": "archive/track-materials-full.md" },
+        { "id": "overview-v82", "label": "대시보드 (v82)", "file": "archive/overview-summary-v82.md" },
+        { "id": "strategy", "label": "필승 전략", "file": "archive/track-strategy.md" },
+        { "id": "build", "label": "빌드 가이드", "file": "archive/track-build.md" },
+        { "id": "plan", "label": "작전 플랜", "file": "archive/track-plan.md" },
+        { "id": "benchmark", "label": "벤치마크 구성", "file": "archive/track-benchmark.md" },
+        { "id": "research", "label": "회사 리서치", "file": "archive/track-research.md" },
+        { "id": "transcript", "label": "트랜스크립트 번역", "file": "archive/track-transcript.md" },
+        { "id": "kickoff", "label": "Kick-off", "file": "archive/missions-kickoff.md" },
+        { "id": "final-mission", "label": "Final", "file": "archive/missions-final.md" },
+        { "id": "conduct", "label": "Code of Conduct", "file": "archive/missions-conduct.md" },
+        { "id": "judging", "label": "심사·상금", "file": "archive/missions-judging.md" },
+        { "id": "schedule", "label": "전체 타임라인", "file": "archive/schedule-all.md" },
+        { "id": "venue", "label": "WiFi·연락처·장소", "file": "archive/venue-info.md" },
+        { "id": "bingo", "label": "BINGO", "file": "archive/venue-bingo.md" },
+        { "id": "tracks-compare", "label": "트랙 비교", "file": "archive/tracks-compare.md" },
+        { "id": "tracks-status", "label": "트랙 정리 현황", "file": "archive/tracks-status.md" },
+        { "id": "tracks-microsoft", "label": "Microsoft×경북", "file": "archive/tracks-microsoft.md" },
+        { "id": "tracks-upstage", "label": "Upstage", "file": "archive/tracks-upstage.md" }
       ]
     }
   ]
