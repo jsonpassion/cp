@@ -84,6 +84,24 @@ flowchart TD
     I2 --> I3["✅ 40점·30점 동시 확보"]
 ```
 
+## ✅ 모델 3종 확정 (실측 + 공식 공지, 2026-08-22)
+
+| 모델 ID | 정체 | **컨텍스트 한도** (입력+출력 합산, FuriosaAI 공식) |
+| --- | --- | --- |
+| `furiosa-ai/gpt-oss-120b` | OpenAI gpt-oss 120B (reasoning) | **128K** |
+| `furiosa-ai/K-EXAONE-236B-A23B-NVFP4A16` | LG K-EXAONE 236B MoE (활성 23B) | **48K** |
+| `furiosa-ai/Qwen3-32B-FP8` | Qwen3 32B (thinking) | **40K** |
+
+- 엔드포인트: `https://submission.jxc.events.lablup.ai:8445` (AI:GO 프로바이더 타입 **vLLM**)
+- **SWE-bench 문항의 실제 요청 크기 실측: ~66KB ≈ 16.5K 토큰** (published requests 샘플) → Qwen3(40K)·EXAONE(48K)에서는 입력만으로 컨텍스트의 1/3~40%를 소모. **대형 코딩 문항은 128K인 gpt-oss로 보내는 것이 안전**
+- 사전 측정(동일한 쉬운 문제): gpt-oss **48토큰/0.6초** vs Qwen3 **1,596토큰/24초** — 낭비가 33배 차이. 셋 다 reasoning 토큰을 사용함
+
+## ✅ 평가 환경 공식 확답 (Lablup Kyujin Cho, Discord)
+
+> 개발 과정에서는 **어떤 AI를 사용해도 관계없음**. 다만 첫 번째 산출물인 "벤치마크 점수"는 별도의 **judging system이 자동 계산**하므로, 평가 중 **MCP나 외부 코드 사용은 원천 차단**됨.
+
+→ 시각화·결과 분석은 별도 코드 자유. 스쿼드 자체는 AI:GO Squad 기능(프롬프트·역할·모델 배정)만으로 승부.
+
 **평가 모델 구성: instruct 1개 + reasoning 2개.** 키노트 대시보드 화면에서 확인된 instruct 계열 모델은 **`Qwen3-30B-A3B-Instruct-2507-FP8`** 입니다. 나머지 2개 reasoning 모델의 정확한 ID는 팀 로그인 후 **Development keys / Development usage** 페이지 또는 dev key로 `/v1/models`를 호출하면 확인됩니다.
 
 ## ✅ 여기서 도출되는 모델 배정 전략
