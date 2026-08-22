@@ -1,5 +1,7 @@
-# ✍️ Squad v3.6 — 로스터 5종 · Qwen3 플래너 + gpt-oss 솔버 · 답만 출력 · 카드별 세팅 & 프롬프트
+# ✍️ Squad v3.7 — 로스터 5종 · Qwen3 플래너(/no_think) + gpt-oss 솔버 · 답만 출력
 
+> 🔵 **v3.7 (08-22 19:12)** — **Conductor 프롬프트 첫 줄에 `/no_think`** (Qwen3 thinking 모드 끄기). 직접 API 실측(같은 generic 요청): thinking ON = 17.4s · 출력 1,229 tok(추론 1,222) · **create_task 0회, 스스로 답함(오답 G)** / `/no_think` = **1.1s · 출력 54 tok · create_task 1회(Generic-Solver)**. 라우터 통계로 본 Qwen3 플래너 호출 평균 출력 ~590 tok → 문항당 플래너 비용 ≈ 2.4K 절감(실행 단계 전체보다 큼). **GUI 작업: Conductor 프롬프트 맨 위에 `/no_think` 한 줄 추가 → Save → math·generic·coding 1문항씩 완주로 태스크 1 유지 확인.**
+>
 > 🟠 **v3.6 (08-22 18:51)** — 운영진(Kyujin Cho) 18:02 힌트 **"마지막 태스크가 가능한 한 정답 이외의 아무 내용도 적지 않도록 가이드해야 한다"** = 채점은 **마지막 태스크의 출력**을 읽는다. 따라서 ① Generic-Solver의 `Confidence:` 줄 **삭제**(답 한 줄만) ② Math-Solver의 `UNSURE` 줄 **삭제** ③ 솔버 4종 RULES에 "네 응답이 채점 대상 — 답 외 아무것도 쓰지 말 것" 추가 ④ one-shot 3종 끝에 지시형 문장 "Solve this problem:" 추가(v2.2 — "플래너에게 직접 전달되는 지시형 문장" 힌트). **GUI 작업: Generic-Solver·Math-Solver·LCB-Coder·SWE-Patcher 프롬프트 교체 → Save. 3차(최종) 제출용.**
 >
 > 🟢 **v3.5 (08-22 18:11)** — **Conductor 모델만 Qwen3-32B-FP8로 교체** (프롬프트는 v3.4 그대로). 근거: 같은 요청 4회 A/B에서 gpt-oss 플래너는 태스크 1·2·2·3으로 흔들렸고 **Qwen3 플래너는 4/4 태스크 1** (호출 1~2, 문항당 986~1,645 tok). 운영진 힌트 "프롬프트 튜닝 또는 모델 선택"의 후자가 맞았다. 솔버 4종은 gpt-oss 유지(전 트랙 정확도 1위). GUI 작업: Conductor 카드 모델만 변경 → Save.
@@ -35,11 +37,12 @@
 
 ## 1. Conductor
 
-**역할: 플래너** · 모델: **Qwen3-32B-FP8** (v3.5) · 최대 토큰 2048 · **도구 호출 라운드 2** · 도구 0 · 메모리 OFF · 인프로세스
+**역할: 플래너** · 모델: **Qwen3-32B-FP8** (v3.5) · 프롬프트 첫 줄 `/no_think` (v3.7) · 최대 토큰 2048 · **도구 호출 라운드 2** · 도구 0 · 메모리 OFF · 인프로세스
 
 **설명(description) 필드:** `Planner. Routes each benchmark problem to exactly one specialist and returns that specialist's answer verbatim; never solves.`
 
 ```
+/no_think
 You are Conductor, the planner of a benchmark-solving squad. Each incoming request is ONE self-contained benchmark problem that ONE specialist must solve end-to-end in a single step.
 
 If the request begins with a [PLANNING DIRECTIVE], obey it literally: it names the single assignee, the task title, and the exact task description. It overrides every other planning habit.
@@ -228,6 +231,7 @@ RULES (apply always):
 - [ ] 에이전트 **5개**, **플래너 = Conductor** 표시 확인 (Context-Handler·Math-Verifier·Format-Warden 카드 삭제됨)
 - [ ] 카드마다 도구 배지 **0** / 메모리 **OFF** / 모델: Conductor **Qwen3-32B-FP8**, 솔버 **GPT-OSS 120B**
 - [ ] (v3.4) Conductor에 'Agent economy' 단락 · 솔버 4개 RULES = "You are the only agent on this problem…"
+- [ ] (v3.7) Conductor 프롬프트 첫 줄 `/no_think`
 - [ ] (v3.6) Generic-Solver 출력 1줄(Confidence 없음) · Math-Solver UNSURE 없음 · 솔버 RULES 마지막 줄 "Your reply is the graded output…"
 - [ ] 생성 후 워크스페이스 루트 `.squad.json` 존재 → **role 문자열에 "planner" 포함 여부 검증** (Claude에게 요청)
 
@@ -309,4 +313,4 @@ Solve this problem:
 
 ---
 
-🕒 **최신 반영: 2026-08-22 18:51 KST** — 이 타임스탬프보다 오래된 복사본은 구버전입니다. (v3.6: 답만 출력 — Confidence·UNSURE 삭제, graded-output RULES, one-shot v2.2 'Solve this problem:')
+🕒 **최신 반영: 2026-08-22 19:12 KST** — 이 타임스탬프보다 오래된 복사본은 구버전입니다. (v3.7: Conductor `/no_think` — 플래너 출력 1,229→54 tok)
