@@ -14,7 +14,7 @@
 | --- | --- |
 | 모델 | **GPT-OSS 120B** (= furiosa-ai/gpt-oss-120b) — 반드시 명시 선택, 비워두기 금지 |
 | **도구** | **전부 OFF → 배지 0 확인** ⚠️ 기본 ON 상태로 시작함 |
-| 최대 도구 호출 라운드 | 무시 (도구 0이면 무의미) |
+| 최대 도구 호출 라운드 | **Conductor 2 · 솔버 1** — 평가엔 미전달(로컬 공회전 차단용). 빈 응답 재시도가 이 카운트에 포함되는지는 완주 실험으로 확인 |
 | **메모리** | **OFF** ⚠️ 기본 ON |
 | 실행 모드 | 인프로세스 유지 |
 | 재사용 가능한 에이전트로 저장 | OFF |
@@ -27,7 +27,7 @@
 
 ## 1. Conductor
 
-**역할: 플래너** · 모델: GPT-OSS 120B · 최대 토큰 2048 · 도구 0 · 메모리 OFF · 인프로세스
+**역할: 플래너** · 모델: GPT-OSS 120B · 최대 토큰 2048 · **도구 호출 라운드 2** · 도구 0 · 메모리 OFF · 인프로세스
 
 **설명(description) 필드:** `Planner. Routes each benchmark problem to exactly one specialist and returns that specialist's answer verbatim; never solves.`
 
@@ -53,7 +53,7 @@ RULES (apply always):
 
 ## 2. Generic-Solver
 
-역할: 사용자 정의 · 모델: GPT-OSS 120B · 최대 토큰 4096 · 도구 0 · 메모리 OFF · 인프로세스
+역할: 사용자 정의 · 모델: GPT-OSS 120B · 최대 토큰 4096 · **도구 호출 라운드 1** · 도구 0 · 메모리 OFF · 인프로세스
 
 **설명(description) 필드:** `Solves hard multiple-choice questions (MMLU-Pro/GPQA); outputs one letter.`
 
@@ -79,7 +79,7 @@ RULES (apply always):
 
 ## 3. Math-Solver
 
-역할: 사용자 정의 · 모델: GPT-OSS 120B · 최대 토큰 8192 · 도구 0 · 메모리 OFF · 인프로세스
+역할: 사용자 정의 · 모델: GPT-OSS 120B · 최대 토큰 8192 · **도구 호출 라운드 1** · 도구 0 · 메모리 OFF · 인프로세스
 
 **설명(description) 필드:** `Solves AIME/HMMT-level math problems; outputs the final answer in \boxed{}.`
 
@@ -103,7 +103,7 @@ RULES (apply always):
 
 ## 4. LCB-Coder
 
-역할: 사용자 정의 · 모델: GPT-OSS 120B · 최대 토큰 8192 · 도구 0 · 메모리 OFF · 인프로세스
+역할: 사용자 정의 · 모델: GPT-OSS 120B · 최대 토큰 8192 · **도구 호출 라운드 1** · 도구 0 · 메모리 OFF · 인프로세스
 
 **설명(description) 필드:** `Writes Python 3 solutions for algorithmic problems with tests; code only.`
 
@@ -127,7 +127,7 @@ RULES (apply always):
 
 ## 5. SWE-Patcher
 
-역할: 사용자 정의 · 모델: GPT-OSS 120B · 최대 토큰 16384 · 도구 0 · 메모리 OFF · 인프로세스
+역할: 사용자 정의 · 모델: GPT-OSS 120B · 최대 토큰 16384 · **도구 호출 라운드 1** · 도구 0 · 메모리 OFF · 인프로세스
 
 **설명(description) 필드:** `Produces the minimal unified-diff patch that fixes a repository issue; reads the full provided context.`
 
@@ -290,4 +290,4 @@ RULES (apply always):
 
 ---
 
-🕒 **최신 반영: 2026-08-22 16:07 KST** — 이 타임스탬프보다 오래된 복사본은 구버전입니다. (v3.2: 로스터 5종 재확정 + Conductor 취합 규칙 + 제외 에이전트 보존)
+🕒 **최신 반영: 2026-08-22 16:49 KST** — 이 타임스탬프보다 오래된 복사본은 구버전입니다. (v3.2: 로스터 5종 재확정 + Conductor 취합 규칙 + 제외 에이전트 보존)
