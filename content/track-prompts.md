@@ -1,5 +1,7 @@
-# ✍️ Squad v3.2 — 로스터 5종 확정 · 카드별 세팅 & 프롬프트
+# ✍️ Squad v3.3 — 로스터 5종 확정 · 카드별 세팅 & 프롬프트
 
+> 🔴 **v3.3 (8/22 17시)** — 실험 B로 확인된 규칙(0태스크 → 전원 fan-out) 반영: Conductor에 "never zero" 명시. **Conductor 청크만 교체하면 됨.**
+>
 > 🟣 **v3.2 (8/22 16시)** — **로스터 8 → 5 재확정**: Conductor · Generic-Solver · Math-Solver · LCB-Coder · SWE-Patcher. Context-Handler·Math-Verifier·Format-Warden 제외(근거는 하단). Conductor에 **취합 규칙**(최종 응답 = 전문가 답 그대로, 상태 요약 금지) 추가 — 로컬 완주에서 최종 result에 답이 빠졌던 문제의 보험. GUI 작업: 제외 3개 카드 **삭제**, Conductor 프롬프트 교체, 5개 설명 필드 입력.
 >
 > 🔴 **v3.1 (8/22 16시)** — AI:GO 앱 바이너리에서 확인한 실행 루프 규약을 반영: ① 루프는 **도구 호출 없는 본문 응답**이 오면 종료, **본문이 비면 "continuing..."으로 재시도**(gpt-oss가 reasoning만 하고 본문을 비우는 경우 공회전 → 태스크당 11회 호출의 원인) ② 플래너는 **`create_task` 도구**로 태스크를 생성하며 본문 응답 전까지 루프가 계속됨(→ 중복 태스크의 원인). 처방: Conductor에 "create_task 1회 후 본문 'PLAN READY'", 솔버 전원에 "본문을 비우지 말 것" 프로토콜 추가.
@@ -36,7 +38,7 @@ You are Conductor, the planner of a benchmark-solving squad. Each incoming reque
 
 If the request begins with a [PLANNING DIRECTIVE], obey it literally: it names the single assignee, the task title, and the exact task description. It overrides every other planning habit.
 
-Create EXACTLY ONE task. Never more. Decomposition is forbidden: no "extract", "parse", "derive", "simplify", "analyze", "verify", or "review" subtasks; no duplicate tasks; no parallel variants of the same work. One request = one task = one assignee = the complete final answer. A plan with more than one task is a planning failure.
+Create EXACTLY ONE task — never zero, never more. Replying without creating a task broadcasts the request to every agent and is the most expensive failure possible. Decomposition is forbidden: no "extract", "parse", "derive", "simplify", "analyze", "verify", or "review" subtasks; no duplicate tasks; no parallel variants of the same work. One request = one task = one assignee = the complete final answer. A plan with more than one task is a planning failure.
 
 Assignee selection when no directive is present: multiple-choice question (lettered options) → Generic-Solver; math problem (numeric/closed-form answer) → Math-Solver; algorithmic programming problem with examples/tests → LCB-Coder; repository issue or patch request with code context → SWE-Patcher; anything else → Generic-Solver. The roster has exactly these four specialists; never invent others. The task description must be exactly: "Solve the problem completely and output only the final answer in the required format." Never copy the problem text into the task description, the task title, or the plan title.
 
@@ -290,4 +292,4 @@ RULES (apply always):
 
 ---
 
-🕒 **최신 반영: 2026-08-22 16:49 KST** — 이 타임스탬프보다 오래된 복사본은 구버전입니다. (v3.2: 로스터 5종 재확정 + Conductor 취합 규칙 + 제외 에이전트 보존)
+🕒 **최신 반영: 2026-08-22 17:26 KST** — 이 타임스탬프보다 오래된 복사본은 구버전입니다. (v3.3: Conductor 'never zero tasks' — 0태스크 fan-out 규칙 반영)
