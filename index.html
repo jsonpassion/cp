@@ -119,6 +119,25 @@
   }
   .copy-btn:hover { opacity: 1; }
   .copy-btn.done { background: var(--ok, #34d399); border-color: var(--ok, #34d399); }
+  #gate {
+    position: fixed; inset: 0; z-index: 9999;
+    background: var(--ink, #14102b);
+    display: flex; align-items: center; justify-content: center;
+  }
+  #gate-form { display: flex; flex-direction: column; gap: .8rem; align-items: center; width: min(280px, 80vw); }
+  .gate-logo { font-size: 2.6rem; }
+  #gate-pw {
+    width: 100%; text-align: center; font: inherit; font-size: 1.05rem; letter-spacing: .3em;
+    padding: .6rem .8rem; border-radius: 10px; border: 2px solid #F5F0E8;
+    background: transparent; color: #F5F0E8; outline: none;
+  }
+  #gate-form button {
+    font: inherit; font-weight: 700; padding: .5rem 1.6rem; border-radius: 10px;
+    border: 2px solid #F5F0E8; background: #F5F0E8; color: var(--ink, #14102b); cursor: pointer;
+  }
+  #gate-err { color: #f87171; font-size: .85rem; min-height: 1.2em; }
+  .shake { animation: gateshake .3s; }
+  @keyframes gateshake { 25% { transform: translateX(-7px); } 75% { transform: translateX(7px); } }
   main blockquote {
     margin: 1.2em 0; padding: .8em 1.1em; background: var(--surface);
     border: var(--bw) solid var(--ink); border-left-width: 10px; border-radius: var(--r-md);
@@ -157,6 +176,15 @@
 </style>
 </head>
 <body>
+<div id="gate">
+  <form id="gate-form">
+    <div class="gate-logo">🥣</div>
+    <input id="gate-pw" type="password" maxlength="24" autocomplete="off"
+           placeholder="암호 입력" aria-label="password">
+    <button type="submit">입장</button>
+    <div id="gate-err"></div>
+  </form>
+</div>
 <header>
   <div class="wrap">
     <div class="hq-title">
@@ -235,6 +263,39 @@ function tickCountdowns() {
 }
 setInterval(tickCountdowns, 1000); tickCountdowns();
 
+// ---- 입장 게이트 (SHA-256 비교, 통과 전 콘텐츠 미로드) ----
+const GATE_HASH = "451f612625e2b585ca4dede5f7254f2e3c045acca4b290156346bebac3d48f2c";
+async function sha256hex(s) {
+  const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
+  return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, "0")).join("");
+}
+let appStarted = false;
+function startApp() {
+  if (appStarted) return;
+  appStarted = true;
+  document.getElementById("gate").remove();
+  fetch("content/manifest.json", { cache: "no-cache" }).then(r => r.json()).then(m => { MANIFEST = m; render(); });
+}
+(function initGate() {
+  if (localStorage.getItem("cp_gate") === GATE_HASH) { startApp(); return; }
+  const form = document.getElementById("gate-form");
+  const pw = document.getElementById("gate-pw");
+  const err = document.getElementById("gate-err");
+  pw.focus();
+  form.addEventListener("submit", async e => {
+    e.preventDefault();
+    const h = await sha256hex(pw.value.trim());
+    if (h === GATE_HASH) {
+      localStorage.setItem("cp_gate", h);
+      startApp();
+    } else {
+      err.textContent = "틀렸습니다";
+      pw.value = ""; pw.focus();
+      form.classList.remove("shake"); void form.offsetWidth; form.classList.add("shake");
+    }
+  });
+})();
+
 let MANIFEST = null;
 const parseHash = () => { const [tab, sub] = location.hash.replace(/^#\/?/, "").split("/"); return { tab, sub }; };
 const findTab = id => MANIFEST.tabs.find(t => t.id === id) || MANIFEST.tabs[0];
@@ -302,7 +363,7 @@ async function render() {
 }
 
 window.addEventListener("hashchange", render);
-fetch("content/manifest.json", { cache: "no-cache" }).then(r => r.json()).then(m => { MANIFEST = m; render(); });
+// (manifest 로드는 게이트 통과 후 startApp()에서 수행)
 </script>
 </body>
 </html>
