@@ -1,5 +1,5 @@
 {
-  "version": 15,
+  "version": 16,
   "tabs": [
     {
       "id": "overview",
@@ -53,6 +53,11 @@
       "id": "track",
       "label": "🎯 Lablup×Furiosa",
       "subtabs": [
+        {
+          "id": "insights",
+          "label": "💡 핵심 인사이트",
+          "file": "track-insights.md"
+        },
         {
           "id": "plan",
           "label": "작전 플랜",
