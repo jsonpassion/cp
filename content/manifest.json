@@ -1,5 +1,5 @@
 {
-  "version": 17,
+  "version": 18,
   "tabs": [
     {
       "id": "overview",
@@ -72,6 +72,11 @@
           "id": "viz",
           "label": "시각화·발표",
           "file": "track-viz.md"
+        },
+        {
+          "id": "materials",
+          "label": "발표 재료",
+          "file": "track-materials.md"
         },
         {
           "id": "submission",

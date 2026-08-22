@@ -1,0 +1,77 @@
+# 🗃 발표 재료 창고
+
+> 키노트 장표·피치덱·시각화 산출물을 만들 때 꺼내 쓸 재료를 **단계가 진행될 때마다 누적**하는 곳. 문장은 다듬지 말고 원석 그대로 쌓는다. (규칙: 새 결정·새 숫자·새 인용이 생기면 즉시 여기에 한 줄 추가)
+
+## A. 서사 문장 (피치 카피 원석)
+
+- **"손에 쥘 수 있는 모델로 어디까지 갈 수 있는가? — 한 그릇이면 충분합니다."** (오프닝, 키노트 질문 화답)
+- "재료 하나하나는 한 끼가 못 되지만, 비비면 완성됩니다." (아키텍처 한 문장)
+- **"비용은 로스터가 아니라 홉이 결정한다."** (설계 원칙 — 등록 ≠ 출전)
+- "로스터는 넓게, 경로는 짧게."
+- **"새로운 정보를 주지 못하는 측정에 가장 비싼 시간을 쓰지 않는다."** (EXAONE coding 생략 명분 — 엔지니어링 판단력 어필용)
+- "캡 관리가 곧 정확도다." (Qwen coding 35% 붕괴에서 도출)
+- "우리는 X% 정확도를 정답 1개당 평균 Y토큰으로 달성했고, 그 판단 과정 전부를 되감아 볼 수 있습니다." (클로징 — 수치 확정 후 채움)
+- "지능은 전기처럼 흐른다 — 저전력 한국산 NPU 위에서." (비전, Lablup 문장 인용 연결)
+
+## B. 숫자 증거 (장표용 데이터)
+
+**베이스라인 최종 매트릭스** (visible, max_tokens 4096, 정확도/출력tok/문항):
+
+| 모델 | generic | math | coding(LCB) |
+| --- | --- | --- | --- |
+| gpt-oss-120b | 60% / 572 | **100% / 740** | **85% / 2,036** |
+| K-EXAONE-236B | 50% / 2,852 | 86.7% / 2,617 | 생략 |
+| Qwen3-32B | **65% / 1,202** | 86.7% / 2,792 | 35% / 3,237 |
+
+- **33배**: 같은 쉬운 문제(17×23)에 gpt-oss 48tok/0.6초 vs Qwen3 1,596tok/24초 — "라우팅이 왜 필요한가" 장표의 핵심 숫자
+- **97%**: 리더보드 공식 경고 — 한 평가 모델은 출력 예산의 97%를 사고 토큰에 소비
+- **16.5K tok**: SWE-bench 문항 하나의 입력 크기 실측(66KB) — 컨텍스트 전략 근거
+- **컨텍스트 한도**: gpt-oss 128K / EXAONE 48K / Qwen 40K (입력+출력 합산, 공식)
+- **히든 세트 분포**: generic 448~698 / coding 140~240 / math 60~66 — "수학 대회가 아니라 상식 대회" 장표
+- **배점**: 벤치마크 40 / 시각화 30 / 토큰효율 30 — "60점은 엔지니어링 바깥에 있다"
+- **캐시 실증**: 86토큰 중 68토큰 적중 (prefix cache 동작 확인)
+- 과금 구조: Check 무료 무제한 / Test run 1/5 / Submission 전액·전 제출 합산 / 큐 대기1·실행1
+
+## C. 결정 로그 (결정 · 명분 · 키워드)
+
+| # | 결정 | 명분 (한 줄) | 발표 키워드 |
+| --- | --- | --- | --- |
+| 1 | 트랙 3종 분석을 먼저 (미션 문구보다 실측) | 히든 세트 매니페스트가 공개돼 있었고, 분포가 통념(수학 중심)과 정반대 | 데이터 우선, 출제 의도 해석 |
+| 2 | **EXAONE 배제** | 측정 전패 + FuriosaAI 공식 배치 비권고 + wall-clock 캡 리스크 | 기회비용, 확인사살 금지 |
+| 3 | EXAONE coding 측정 생략 | 결정이 이미 난 측정에 30분을 쓰는 대신 미결(Qwen)로 직행 | 실험 설계의 우선순위 |
+| 4 | **math·coding = gpt-oss 단독** | math 만점·coding 85%, 2위와 격차 커서 검증 홉조차 역효과 | 단순함이 이긴다 |
+| 5 | generic만 하이브리드 검토 (confgate) | 유일하게 Qwen이 우위인 트랙(65% vs 60%), 단 2.1배 비용 → 조건부 게이트로 양쪽 강점만 | 조건부 분기, 확신 게이트 |
+| 6 | 로스터 4 → 9 전환 | 비용은 홉 수가 결정, 등록은 공짜 — 전담화로 형식 실수↓ 프롬프트 길이↓ | 로스터≠출전, 홉 최적화 |
+| 7 | 시각화 = 리플레이 방식 | 채점 문언이 "로그(텍스트) Trace의 시각화" — 라이브 스트리밍 아님 + 데모 리스크 0 | 문언 정합, 무사고 데모 |
+| 8 | give-up을 별도 에이전트가 아닌 Verifier 규칙으로 | 홉 추가 없이 동일 효과 | 토큰 절약 |
+| 9 | 코드실행 검증은 개발 전용 | 평가 중 도구 원천 차단(공식) → 평가용은 경로 이중화(LLM 재풀이) | 제약의 내재화 |
+| 10 | 확신 자기보고 게이트는 검증 후 채택 | 스모크에서 conf=9 편중(과신) 관찰 — 캘리브레이션 안 되면 일치 기반 게이트로 대체 | 자기보고 불신, 실측 우선 |
+
+## D. 공식 인용문 (원문 그대로)
+
+- 키노트: **"How far can you go with a model you can actually hold in your hands?"**
+- 키노트 채점: "the Trace, represented as **log (text) data**, is visualized with consideration for **observability, interpretability, traceability, explainability, clarity, and insightfulness**"
+- 리더보드 공지: "one was measured spending **97% of its output budget on reasoning tokens** before it answered — a token cap bites roughly **an order of magnitude harder** on a squad built from reasoning models"
+- practice-sets: "**your squad has no tools during a run** and never browses a repository"
+- practice-sets: "published **for teams to iterate against** … **never overlap the hidden sets**"
+- 제출 대시보드: "a prompt structure that keeps **a long stable prefix** in front of the varying part **buys you real headroom**"
+- Kyujin Cho(Lablup): "MCP나 외부 코드의 사용은 **원천 차단**" / 개발 과정에서는 어떤 AI든 무방
+- Joonwon Lee(FuriosaAI): 컨텍스트 한도 공지 + "**빠른 응답과 배치처리를 위해서는 GPT-OSS-120B, Qwen3-32B를 주로 활용**" + "입력을 잘라서 여러 번에 걸쳐 받도록 처리하는 에이전트"
+- Lablup 비전: "**intelligence flows like electricity**, reaching wherever it's needed"
+
+## E. 데모 장면 후보 (시각화 재료)
+
+1. **Baseline vs BIBIMBAP 경주** — 같은 문항, 왼쪽 단일 모델 토큰 게이지 폭주 vs 오른쪽 스쿼드 2~3홉 완성 (베이스라인 데이터 확보됨 → 구현 저비용)
+2. 그릇(방사형) 리플레이 — 재료가 섞이듯 메시지가 흐르고 문항마다 비빔밥 한 그릇 완성
+3. give-up 순간 — Verifier가 "확정" 판정하며 주황불, 아낀 토큰 카운터 상승
+4. The Receipt — 정답 1개당 토큰 영수증, 캐시 적중률 게이지
+5. 관람객 인터랙션 — 스크러버를 심사위원 손에 쥐여주기 (데모 엑스포 운영)
+6. 33배 차이 장면 — 같은 쉬운 문제를 두 모델에 던지는 10초 클립
+
+## F. 피치덱 스켈레톤 (10장 매핑)
+
+1. 질문 인용 (A-1) → 2. 답: 한 그릇 (A-2) → 3. 문제의 실체: 히든 분포·캡 (B) → 4. 아키텍처: 로스터·홉 (C-6) → 5. 모델 배정 근거: 매트릭스 (B) → 6. 토큰 전략: 캐시·게이트·give-up (C-5,8) → 7. 라이브 데모: 경주 (E-1) → 8. The Receipt: 수치 증명 (A-7) → 9. 엔지니어링 판단 스토리 (C-2,3 — "우리는 이렇게 결정했다") → 10. 비전 (A-8)
+
+---
+
+*누적 이력: 2026-08-22 오후 창고 개설 (베이스라인 완료 시점). 이후 confgate 결과·Squad 실측·제출 성적이 나올 때마다 B·C에 추가.*
