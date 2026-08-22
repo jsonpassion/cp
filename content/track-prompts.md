@@ -1,5 +1,7 @@
 # ✍️ Squad v3.7 — 로스터 5종 · Qwen3 플래너(/no_think) + gpt-oss 솔버 · 답만 출력
 
+> 🟢 **v3.7b (08-22 19:14)** — Generic-Solver 추론 문구 교체: 답만 출력(v3.6)으로 바꾸자 추론이 줄어 정확도 신호가 떨어짐(같은 20문항: v3.1 65% · v3.6 55% · 예산 문구 제거 65% · **"private reasoning은 충분히, 표시는 한 줄" 73.7%**, +110 tok). 후자 채택. 140문항 확인 측정 진행 중.
+>
 > 🔵 **v3.7 (08-22 19:12)** — **Conductor 프롬프트 첫 줄에 `/no_think`** (Qwen3 thinking 모드 끄기). 직접 API 실측(같은 generic 요청): thinking ON = 17.4s · 출력 1,229 tok(추론 1,222) · **create_task 0회, 스스로 답함(오답 G)** / `/no_think` = **1.1s · 출력 54 tok · create_task 1회(Generic-Solver)**. 라우터 통계로 본 Qwen3 플래너 호출 평균 출력 ~590 tok → 문항당 플래너 비용 ≈ 2.4K 절감(실행 단계 전체보다 큼). **GUI 작업: Conductor 프롬프트 맨 위에 `/no_think` 한 줄 추가 → Save → math·generic·coding 1문항씩 완주로 태스크 1 유지 확인.**
 >
 > 🟠 **v3.6 (08-22 18:51)** — 운영진(Kyujin Cho) 18:02 힌트 **"마지막 태스크가 가능한 한 정답 이외의 아무 내용도 적지 않도록 가이드해야 한다"** = 채점은 **마지막 태스크의 출력**을 읽는다. 따라서 ① Generic-Solver의 `Confidence:` 줄 **삭제**(답 한 줄만) ② Math-Solver의 `UNSURE` 줄 **삭제** ③ 솔버 4종 RULES에 "네 응답이 채점 대상 — 답 외 아무것도 쓰지 말 것" 추가 ④ one-shot 3종 끝에 지시형 문장 "Solve this problem:" 추가(v2.2 — "플래너에게 직접 전달되는 지시형 문장" 힌트). **GUI 작업: Generic-Solver·Math-Solver·LCB-Coder·SWE-Patcher 프롬프트 교체 → Save. 3차(최종) 제출용.**
@@ -75,7 +77,7 @@ You are Generic-Solver, an expert exam-taker for hard multiple-choice questions 
 
 Procedure: (1) state to yourself, in one clause, what the question is actually testing; (2) eliminate options that contradict established facts, the question's stated constraints, or the units/scale implied; (3) for quantitative questions, compute the value first (track units, sign, and order of magnitude), then match it to an option — never pick by resemblance; (4) if two options remain, choose the one that holds in the most general case or that the question's wording specifically targets; (5) never choose an option because it sounds sophisticated, and never choose "none of the above" unless every other option is positively ruled out.
 
-Reasoning budget: at most 3 short sentences. The chosen letter must be one of the offered options.
+Reason carefully and completely in your private reasoning before answering — work the problem through; only the visible reply is restricted to one line. The chosen letter must be one of the offered options.
 
 Output exactly one line and nothing else:
 Answer: <LETTER>
@@ -313,4 +315,4 @@ Solve this problem:
 
 ---
 
-🕒 **최신 반영: 2026-08-22 19:12 KST** — 이 타임스탬프보다 오래된 복사본은 구버전입니다. (v3.7: Conductor `/no_think` — 플래너 출력 1,229→54 tok)
+🕒 **최신 반영: 2026-08-22 19:14 KST** — 이 타임스탬프보다 오래된 복사본은 구버전입니다. (v3.7b: Generic-Solver 'reason carefully in private reasoning' 문구, Conductor /no_think)
