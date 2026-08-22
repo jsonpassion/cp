@@ -1,5 +1,7 @@
-# ✍️ Squad v3.4 — 로스터 5종 확정 · 카드별 세팅 & 프롬프트
+# ✍️ Squad v3.5 — 로스터 5종 · Qwen3 플래너 + gpt-oss 솔버 · 카드별 세팅 & 프롬프트
 
+> 🟢 **v3.5 (08-22 18:11)** — **Conductor 모델만 Qwen3-32B-FP8로 교체** (프롬프트는 v3.4 그대로). 근거: 같은 요청 4회 A/B에서 gpt-oss 플래너는 태스크 1·2·2·3으로 흔들렸고 **Qwen3 플래너는 4/4 태스크 1** (호출 1~2, 문항당 986~1,645 tok). 운영진 힌트 "프롬프트 튜닝 또는 모델 선택"의 후자가 맞았다. 솔버 4종은 gpt-oss 유지(전 트랙 정확도 1위). GUI 작업: Conductor 카드 모델만 변경 → Save.
+>
 > ⛔ **v3.4 (8/22 17:32)** — **원칙 0: 불필요한 에이전트 사용 금지**를 프롬프트 전부에 성문화. 근거(Receipt 화면): 같은 문항에서 단독 617 tok vs 첫 스쿼드 26,808 tok, **낭비의 91%가 입력 재전송** — 에이전트 호출 1회 = 컨텍스트 전체를 한 번 더 보내는 비용. Conductor에 'Agent economy' 조항, 솔버 RULES 마지막 줄을 '혼자 푼다 · 위임 금지'로 교체, one-shot directive에 '추가 에이전트 금지' 1문장. **GUI 작업: Conductor 청크 교체 + 솔버 4개 RULES 마지막 줄 교체(또는 블록 통째 재복사) + 제출 폼 one-shot 3개 재붙여넣기(Check 무료).**
 >
 > 🔴 **v3.3 (8/22 17시)** — 실험 B로 확인된 규칙(0태스크 → 전원 fan-out) 반영: Conductor에 "never zero" 명시. **Conductor 청크만 교체하면 됨.**
@@ -16,7 +18,7 @@
 
 | 항목 | 값 |
 | --- | --- |
-| 모델 | **GPT-OSS 120B** (= furiosa-ai/gpt-oss-120b) — 반드시 명시 선택, 비워두기 금지 |
+| 모델 | **Conductor = Qwen3-32B-FP8** (furiosa-ai/Qwen3-32B-FP8) · **솔버 4종 = GPT-OSS 120B** (furiosa-ai/gpt-oss-120b) — 반드시 명시 선택, 비워두기 금지 |
 | **도구** | **전부 OFF → 배지 0 확인** ⚠️ 기본 ON 상태로 시작함 |
 | 최대 도구 호출 라운드 | **Conductor 2 · 솔버 1** — 평가엔 미전달(로컬 공회전 차단용). 빈 응답 재시도가 이 카운트에 포함되는지는 완주 실험으로 확인 |
 | **메모리** | **OFF** ⚠️ 기본 ON |
@@ -31,7 +33,7 @@
 
 ## 1. Conductor
 
-**역할: 플래너** · 모델: GPT-OSS 120B · 최대 토큰 2048 · **도구 호출 라운드 2** · 도구 0 · 메모리 OFF · 인프로세스
+**역할: 플래너** · 모델: **Qwen3-32B-FP8** (v3.5) · 최대 토큰 2048 · **도구 호출 라운드 2** · 도구 0 · 메모리 OFF · 인프로세스
 
 **설명(description) 필드:** `Planner. Routes each benchmark problem to exactly one specialist and returns that specialist's answer verbatim; never solves.`
 
@@ -218,7 +220,7 @@ RULES (apply always):
 ## 마지막 검토 화면 체크리스트
 
 - [ ] 에이전트 **5개**, **플래너 = Conductor** 표시 확인 (Context-Handler·Math-Verifier·Format-Warden 카드 삭제됨)
-- [ ] 카드마다 도구 배지 **0** / 메모리 **OFF** / 모델 **GPT-OSS 120B**
+- [ ] 카드마다 도구 배지 **0** / 메모리 **OFF** / 모델: Conductor **Qwen3-32B-FP8**, 솔버 **GPT-OSS 120B**
 - [ ] (v3.4) Conductor에 'Agent economy' 단락 · 솔버 4개 RULES 마지막 줄 = "You are the only agent on this problem…"
 - [ ] 생성 후 워크스페이스 루트 `.squad.json` 존재 → **role 문자열에 "planner" 포함 여부 검증** (Claude에게 요청)
 
@@ -297,4 +299,4 @@ RULES (apply always):
 
 ---
 
-🕒 **최신 반영: 2026-08-22 17:32 KST** — 이 타임스탬프보다 오래된 복사본은 구버전입니다. (v3.4: 원칙 0 '불필요한 에이전트 사용 금지' — Conductor·솔버 RULES·one-shot directive 3중 성문화)
+🕒 **최신 반영: 2026-08-22 18:11 KST** — 이 타임스탬프보다 오래된 복사본은 구버전입니다. (v3.5: Conductor 모델 Qwen3-32B-FP8, 프롬프트는 v3.4 동일)

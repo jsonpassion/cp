@@ -29,7 +29,7 @@ flowchart LR
 
 | # | 에이전트 | 역할 | 모델 | 전담 |
 | --- | --- | --- | --- | --- |
-| 1 | **Conductor** | planner | gpt-oss | directive대로 태스크 1개 생성 → 취합 시 전문가 답 그대로 반환 |
+| 1 | **Conductor** | planner | **Qwen3-32B** (v3.5) | directive대로 태스크 1개 생성 — A/B 4/4 개수 1 (gpt-oss 플래너는 1~3 변동) |
 | 2 | **Generic-Solver** | custom | gpt-oss | MMLU-Pro·GPQA 객관식 |
 | 3 | **Math-Solver** | custom | gpt-oss | AIME/HMMT |
 | 4 | **LCB-Coder** | custom | gpt-oss | 알고리즘 문제 (코드 블록) |

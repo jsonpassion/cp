@@ -45,11 +45,12 @@ flowchart LR
 - **무시됨**(Check 경고로 확정): `settingsOverrides`(maxTokens·maxToolCalls) · `toolConfig.enabledTools`(평가는 tool-less) → GUI 저장 시 도구가 다시 켜져도 무방
 - 구조: `{squadId, squadName, initializedAt, appVersion, config: {agents: [...]}}` — 에이전트 배열은 `config.agents`
 
-### 현재 파일 상태 (check_squad.py, 8/22 17:41 저장본) — ✅ 제출 가능
+### 현재 파일 상태 (check_squad.py, 8/22 17:52 저장본 = **v3.5**) — ✅ 제출 가능
 
 | 항목 | 상태 |
 | --- | --- |
 | 프롬프트 | **5/5 v3.4** (Agent economy · only-agent RULES) |
+| 플래너 모델 | **Conductor = Qwen3-32B-FP8** (A/B 4/4 태스크 1) · 솔버 4종 gpt-oss |
 | 모델 | 5/5 gpt-oss-120b · 플래너 Conductor · 16.8 KB |
 | Check 결과 | **No problems found · 경고 15건** = settingsOverrides 5 + tools/enabledTools 5×2 — 전부 "평가에 미전달" 계열, 정정 불필요 |
 | 남은 선택 사항 | ① 설명(description) 5장 공란 — 플래너 로스터 표시용 1줄씩 입력 권장(directive가 담당을 지정하므로 필수는 아님) ② 도구 토글 OFF는 경고만 줄일 뿐 평가 무관 — 시간 남으면 |
