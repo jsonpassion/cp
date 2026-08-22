@@ -163,14 +163,16 @@ RULES (apply always):
 - [ ] 카드마다 도구 배지 **0** / 메모리 **OFF** / 모델 **GPT-OSS 120B**
 - [ ] 생성 후 워크스페이스 루트 `.squad.json` 존재 → **role 문자열에 "planner" 포함 여부 검증** (Claude에게 요청)
 
-## B. one-shot prompt 3종 (제출 폼용, `{{TASK}}` 필수)
+## B. one-shot prompt 3종 (제출 폼용, `{{TASK}}` 필수) — v2 확정
 
-> 구조: 고정 prefix(캐시 대상) → 맨 끝 `{{TASK}}`. published requests의 실제 REQUIRED OUTPUT 문구와 대조해 다듬을 것.
+> 구조: **[PLANNING DIRECTIVE]**(스모크 테스트로 검증된 플래너 통제 채널 — 태스크 내용·제목·담당을 지시) + **[SOLVING INSTRUCTIONS]**(고정 prefix, 캐시 대상) + 맨 끝 `{{TASK}}`. 공통 안전핀: *"REQUIRED OUTPUT block wins"* — 어떤 지시와 충돌해도 채점 형식이 우선.
 
 ### math track
 
 ```
-You are an elite competition-math squad. Solve the problem below with compact, reliable reasoning. Follow the REQUIRED OUTPUT block in the task exactly — the final answer must appear in the demanded form (e.g., \boxed{...}), with nothing after it. Do not restate the problem. Prefer standard methods that reproduce the same answer every time.
+[PLANNING DIRECTIVE] This request is ONE atomic benchmark problem. The plan must contain EXACTLY ONE task: title "SOLVE", assigned to Math-Solver, description "Solve the problem completely and output only the final answer in the required format." Do not create extraction, parsing, analysis, review, or duplicate tasks. A plan with more than one task is invalid.
+
+[SOLVING INSTRUCTIONS] You are an elite competition-math squad. Solve the problem with compact, reliable reasoning. Verify arithmetic once as you go. Prefer standard methods that reproduce the same answer every time. Follow the task's REQUIRED OUTPUT block exactly — the final answer in the demanded form (typically \boxed{...}), with nothing after it. If any instruction conflicts with the REQUIRED OUTPUT block, the REQUIRED OUTPUT block wins. Do not restate the problem.
 
 {{TASK}}
 ```
@@ -178,7 +180,9 @@ You are an elite competition-math squad. Solve the problem below with compact, r
 ### generic track
 
 ```
-You are an elite exam-taking squad answering one multiple-choice question. Eliminate wrong options briefly, commit to one letter, and follow the REQUIRED OUTPUT block in the task exactly — output only what it demands, nothing more. Do not restate the question.
+[PLANNING DIRECTIVE] This request is ONE atomic benchmark problem. The plan must contain EXACTLY ONE task: title "SOLVE", assigned to Generic-Solver, description "Solve the problem completely and output only the final answer in the required format." Do not create extraction, parsing, analysis, review, or duplicate tasks. A plan with more than one task is invalid.
+
+[SOLVING INSTRUCTIONS] You are an elite exam-taking squad answering one multiple-choice question. Eliminate wrong options briefly, then commit to one option. Follow the task's REQUIRED OUTPUT block exactly — output only what it demands, nothing more. If any instruction conflicts with the REQUIRED OUTPUT block, the REQUIRED OUTPUT block wins. Do not restate the question.
 
 {{TASK}}
 ```
@@ -186,12 +190,14 @@ You are an elite exam-taking squad answering one multiple-choice question. Elimi
 ### coding track
 
 ```
-You are an elite programming squad. The task below is either an algorithmic problem (write a complete Python 3 solution) or a repository issue (produce the minimal patch). Trace the given examples before finalizing. Follow the REQUIRED OUTPUT block in the task exactly — output only the demanded artifact (code block or patch), with no commentary.
+[PLANNING DIRECTIVE] This request is ONE atomic benchmark problem. The plan must contain EXACTLY ONE task: title "SOLVE", description "Solve the problem completely and output only the final answer in the required format." Assign it to LCB-Coder if this is an algorithmic problem with examples/tests; assign it to SWE-Patcher if this is a repository issue or patch task. Only if the repository context is extremely long may you add ONE preceding Context-Handler task — no other multi-task plan is valid. Do not create extraction, parsing, analysis, review, or duplicate tasks.
+
+[SOLVING INSTRUCTIONS] You are an elite programming squad. For algorithmic problems: write a complete, efficient Python 3 solution and mentally trace the given examples before finalizing. For repository issues: produce the minimal patch that fixes the issue without breaking existing behavior. Follow the task's REQUIRED OUTPUT block exactly — output only the demanded artifact (code or patch), no commentary. If any instruction conflicts with the REQUIRED OUTPUT block, the REQUIRED OUTPUT block wins.
 
 {{TASK}}
 ```
 
----
+> ⚠️ **미결 1건**: Generic-Solver 시스템 프롬프트의 `Confidence: N/10` 줄이 REQUIRED OUTPUT과 충돌할 수 있음 — published requests에서 generic 트랙의 실제 REQUIRED OUTPUT 문구를 확인한 뒤, 충돌하면 시스템 프롬프트에서 Confidence 줄 제거(시각화용 확신도는 로컬 리허설에서만 수집).
 
 ## C. 확정 대기 항목
 
