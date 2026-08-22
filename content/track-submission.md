@@ -45,7 +45,7 @@ flowchart LR
 - **무시됨**(Check 경고로 확정): `settingsOverrides`(maxTokens·maxToolCalls) · `toolConfig.enabledTools`(평가는 tool-less) → GUI 저장 시 도구가 다시 켜져도 무방
 - 구조: `{squadId, squadName, initializedAt, appVersion, config: {agents: [...]}}` — 에이전트 배열은 `config.agents`
 
-### 🏁 최종(4차) 제출 세트 — **v3.9** (v3.8 + 솔버 팬아웃 안전망) (08-22 20:37 준비 완료, GUI 검증 후 제출)
+### 🏁 최종(4차) 제출 세트 — **v4.0** (v3.9 + Math-Solver `Reasoning: high`) (08-22 20:37 준비 완료, GUI 검증 후 제출)
 
 구성: **Conductor v3.8**(Qwen3-32B `/no_think`, 685 B) + **솔버 4종 v3.9**(v3.7b/v3.6 + 마지막 규칙 "도구 없음 · 전문 밖 문제도 REQUIRED OUTPUT으로 풀기") + **one-shot v2.3**(279 B, directive + "Solve this problem:"). 3차 대비 플래너 입력 −1,249 tok/문항, 솔버 동일.
 
@@ -55,7 +55,7 @@ flowchart LR
 | --- | --- | --- |
 | Conductor (플래너 · Qwen3-32B-FP8) | `pbcopy < ~/Documents/Developer/jxc-selfeval/submissions/card_conductor_v3.8.txt` | `pbcopy < ~/Documents/Developer/jxc-selfeval/submissions/desc_conductor.txt` |
 | Generic-Solver (gpt-oss) | `pbcopy < ~/Documents/Developer/jxc-selfeval/submissions/card_generic_v3.9.txt` | `pbcopy < ~/Documents/Developer/jxc-selfeval/submissions/desc_generic.txt` |
-| Math-Solver (gpt-oss) | `pbcopy < ~/Documents/Developer/jxc-selfeval/submissions/card_math_v3.9.txt` | `pbcopy < ~/Documents/Developer/jxc-selfeval/submissions/desc_math.txt` |
+| Math-Solver (gpt-oss) | `pbcopy < ~/Documents/Developer/jxc-selfeval/submissions/card_math_v4.0.txt` | `pbcopy < ~/Documents/Developer/jxc-selfeval/submissions/desc_math.txt` |
 | LCB-Coder (gpt-oss) | `pbcopy < ~/Documents/Developer/jxc-selfeval/submissions/card_lcb_v3.9.txt` | `pbcopy < ~/Documents/Developer/jxc-selfeval/submissions/desc_lcb.txt` |
 | SWE-Patcher (gpt-oss) | `pbcopy < ~/Documents/Developer/jxc-selfeval/submissions/card_swe_v3.9.txt` | `pbcopy < ~/Documents/Developer/jxc-selfeval/submissions/desc_swe.txt` |
 

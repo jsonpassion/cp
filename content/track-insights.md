@@ -126,6 +126,27 @@ Receipt 화면의 증거 한 줄: **같은 문항(math-visible-0001) 단독 gpt-
 
 `jxc-selfeval/quick.sh <prompts_dir>` — 고정 소수 세트(generic 앞 20 · math 앞 15 · LCB 20)로 5~8분 내 재검증, **부트스트랩 90% 신뢰구간**을 함께 출력해 소표본 차이가 노이즈인지 판정(20문항 65% vs 60% 같은 착시 방지). 베이스라인 기준선과 나란히 비교. 스쿼드 전체(플래너·루프)는 로컬 API로 못 돌리므로 **솔버 품질은 이 루틴, 오케스트레이션은 1문항 GUI 완주 + `analyze_run.py`** 로 이원 검증.
 
+## 🧠 Reasoning:high 실측 (08-22 22:43) + 솔버 모델 배정 재검증
+
+| 트랙 | 기준 (v3.9) | `Reasoning: high` | 판정 |
+| --- | --- | --- | --- |
+| math AIME-2024 (30) | 72.4% · 3,021 tok | **78.6% (22/28 중간)** · 3,224 tok · 69s/문항 | ✅ 채택 — +6%p, 토큰 동일 (히든 13문항) |
+| generic (40) | 80~82% · 490 tok | 82.1% (32/39) · 769 tok | ❌ 동등, 토큰 +57% → 유지 |
+| coding LCB (20) | 95% · 1,381 tok | 94.7% (18/19) · 1,777 tok | ❌ 동등, 토큰 +29% → 유지 |
+
+**v4.0 = Conductor v3.8 · Generic v3.9 · Math v4.0(Reasoning: high) · LCB v3.9 · SWE v3.9 · one-shot v2.3.**
+
+**"Conductor 외 전부 gpt-oss"가 맞는가 — 측정 전부**
+
+| 트랙 | gpt-oss-120b | Qwen3-32B | K-EXAONE-236B | 배정 |
+| --- | --- | --- | --- | --- |
+| generic | **79.1 → 81.9%** (140) | 66.9% (140) · 페르소나+thinking 66.7% (타임아웃 25/40) | 50% (20, 단순 프롬프트) · 페르소나 재측정 중 | gpt-oss |
+| math AIME | **72.4 → 78.6%** | 43.3% (6,911 tok) | 38.9% (18/30 채점, 12 오류, 6,947 tok, 90~170s) | gpt-oss |
+| coding LCB | **85 → 95%** | 35% (20) | 미측정 → **재측정 중**(코더 페르소나) | gpt-oss |
+| coding SWE-bench | 로컬 채점 불가 | — | — (1위 팀이 EXAONE 26회 사용 — SWE용 추정) | gpt-oss 유지, EXAONE LCB 결과로 판단 |
+
+EXAONE은 팀 결정으로 "꼭 필요하면"만 허용. 유일한 후보 자리는 SWE-Patcher(가중치 0.5 트랙의 30여 문항)이나 로컬 근거가 없어, **LCB 20 + generic 20을 EXAONE으로 재측정해 코딩 능력의 대리 지표**로 판단한다(결과 ≥ gpt-oss일 때만 SWE-Patcher 모델 교체 검토).
+
 ## 🏁 리더보드 규칙 재독 (08-22 22:27) — "시간은 공짜, 토큰은 동점 처리, 점수는 정확도뿐"
 
 보드 문언: **점수 = 트랙 정확도의 가중 평균(0~1)**, 총 토큰은 **동점일 때만** 순위를 가르고 wall-clock은 그다음. 캡 없음("no wall-clock cap, no token cap"). 가중치 **coding 0.50 · math 0.25 · generic 0.25**, 문항 coding 38 · math 13 · generic 96. 채점은 전부 프로그램(테스트 통과 / 정답 일치 / 선택지 일치) — 모델 심사 없음. math 히든 = **AIME 2026 + HMMT Feb 2026**, generic = MMLU-Pro + **GPQA**, coding = SWE-bench + LiveCodeBench.
