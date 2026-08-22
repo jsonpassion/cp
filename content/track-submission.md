@@ -11,6 +11,49 @@
 - Submit Final 후 status **Final** 확인 (필요시 Draft로 되돌리기 가능)
 - **제출 후에도 트랙 변경 가능**
 
+## 📦 `.squad.json` 추출 → 제출 폼 붙여넣기 절차 (제출 사이트 문언 기준, 2026-08-22 17:35)
+
+**제출 폼이 요구하는 파일은 단 하나** — AI:GO가 **스쿼드 워크스페이스 루트**에 쓰는 `.squad.json`. 폼 문언: *"AI:GO writes this file at the root of your squad's workspace directory … and rewrites it every time you save the squad. Paste it whole and unedited."* 그리고 *"A Squad Template JSON is not a submission"* — 앱의 **Export(템플릿 내보내기) 파일이 아니라 워크스페이스 파일**이어야 한다.
+
+```mermaid
+flowchart LR
+    A["AI:GO GUI에서<br/>프롬프트 수정"] --> B["Save (저장)<br/>→ .squad.json 재작성"]
+    B --> C["check_squad.py<br/>버전·플래너·크기 판독"]
+    C -->|"❌ 구버전"| A
+    C -->|"✅ v3.4"| D["--copy → 클립보드"]
+    D --> E["제출 폼: Your squad's .squad.json<br/>통째로 붙여넣기 (수정 금지)"]
+    E --> F["one-shot 3종 붙여넣기<br/>(웹앱 B 섹션 복사 버튼)"]
+    F --> G["Check without submitting<br/>(무료·무제한)"]
+    G -->|"No problems found"| H["Submit to the queue"]
+```
+
+### 단계
+
+| # | 무엇을 | 어떻게 | 확인 |
+| --- | --- | --- | --- |
+| 1 | GUI에서 카드 편집 후 **반드시 Save** | 저장 전엔 파일이 구버전 그대로 (8/22 15:55 사고 재발 방지) | 파일 저장 시각이 방금인지 |
+| 2 | 파일 판독 | `python3 ~/Documents/Developer/jxc-selfeval/check_squad.py` | 5개 전부 **v3.4 ✅**, 플래너 Conductor, 크기 ≪ 1 MiB |
+| 3 | 복사 | `python3 ~/Documents/Developer/jxc-selfeval/check_squad.py --copy` (pbcopy) — 숨김 파일이라 Finder에선 ⌘⇧. 로 표시 | "📋 클립보드에 복사됨" |
+| 4 | 폼에 붙여넣기 | **Your squad's .squad.json** 칸에 통째로. 한 글자도 수정 금지 | — |
+| 5 | one-shot 3종 | coding/math/generic 각 칸에 웹앱 프롬프트 탭 B 섹션 복사 버튼 → `{{TASK}}` 리터럴 포함, ≤32 KB | 3칸 모두 |
+| 6 | **Check without submitting** | 러너와 동일 규칙으로 검증, 큐 점유 0·쿨다운 0·횟수 무제한 | "No problems found" (경고 24건은 정상: settingsOverrides 미전달·도구 무효) |
+| 7 | **Submit to the queue** | 대기 1 · 실행 1 (팀당) — 앞선 런이 끝나야 다음이 돈다 | 폼 상단 "Waiting 1 of 1" |
+
+### 파일 안에 들어가는 것 / 평가에서 무시되는 것
+
+- **전달됨**: 에이전트 이름 · role(`{type: planner}` / custom) · **systemPrompt** · description · modelPreferences(preferredModelId) · memoryEnabled
+- **무시됨**(Check 경고로 확정): `settingsOverrides`(maxTokens·maxToolCalls) · `toolConfig.enabledTools`(평가는 tool-less) → GUI 저장 시 도구가 다시 켜져도 무방
+- 구조: `{squadId, squadName, initializedAt, appVersion, config: {agents: [...]}}` — 에이전트 배열은 `config.agents`
+
+### 현재 파일 상태 (check_squad.py, 8/22 17:31 저장본)
+
+| 에이전트 | 프롬프트 | 설명 | 판정 |
+| --- | --- | --- | --- |
+| Conductor | v3.3 (never zero) | 기본값 "Coordinates and distributes…" | ⚠️ v3.4 청크로 교체 + 설명 입력 |
+| Generic / Math / LCB / SWE | v3.1 (hand-off 줄 잔존) | 비어 있음 | ⚠️ RULES 마지막 줄 교체 + 설명 1줄 입력 |
+
+→ **다섯 카드 모두 편집 → Save → check_squad.py ✅ 후에만 추출.** 모델(gpt-oss 5/5)·플래너·크기(15.9 KB)는 이미 정상.
+
 ## 1. 이름 후보 아카이브 (검토 기록)
 
 > ✅ **최종 확정: `[541] BIBIMBAP`** — 아래는 검토 과정 기록입니다.
