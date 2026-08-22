@@ -25,35 +25,17 @@ flowchart LR
 
 > 🟣 **v3.2 정정(8/22 16시)**: 아래 9종 로스터 설계는 **5종으로 축소 확정** — Conductor·Generic-Solver·Math-Solver·LCB-Coder·SWE-Patcher. 근거와 최종 프롬프트는 [프롬프트 초안] 탭. (계획 후 실행 모델이라 조건부 홉 불가 + 플래너가 매 문항 로스터를 읽어 미사용 에이전트도 비용)
 
-**⚠️ 원칙 정정: 에이전트 개수는 제약이 아니다 (≤50이면 됨).** 토큰 비용을 결정하는 것은 로스터 크기가 아니라 **문항 하나가 실제로 거치는 홉(hop) 수**입니다. 등록만 되어 있고 호출되지 않는 스페셜리스트는 공짜입니다. 따라서 최적 구조는:
+**원칙 (v3.2)**: 에이전트 수 제한은 50이지만, AI:GO는 **계획 후 실행** 모델이라 조건부 홉이 없고 플래너가 매 문항 로스터 전체를 읽으며 홉마다 루프 공회전 리스크가 있다. 따라서 **directive가 배정할 전문가만 남긴 최소 로스터 + 문항당 1홉**이 기본형이고, 확장은 **계획 시점 라우팅**(과목 전문가) 또는 **정적 DAG 앙상블**(병렬 솔버 N + 판정자)로만 한다 — 둘 다 실측으로 이득이 증명될 때만.
 
-> **넓은 스페셜리스트 로스터 + 문항당 짧은 경로** — 트랙·문항 유형별 전담 에이전트를 여럿 두되, 각 문항은 그중 2~3홉만 지나가게 한다.
-
-이게 벤치마크 점수에 유리한 이유: 범용 에이전트 하나가 모든 유형을 처리하면 시스템 프롬프트가 잡탕이 되어 형식 실수가 늘어납니다. **트랙별 전담 에이전트는 시스템 프롬프트를 그 유형의 출력 형식에 100% 특화**할 수 있고(벤치마크 40), 프롬프트가 짧아져 홉당 토큰도 줄어듭니다(효율 30).
-
-**권장 로스터 (8~9개), AI:GO → Squad → 새 Squad → 에이전트 추가:**
-
-| # | 에이전트 | 역할(role) | 모델(잠정) | 전담 |
+| # | 에이전트 | 역할 | 모델 | 전담 |
 | --- | --- | --- | --- | --- |
-| 1 | **Conductor** | **planner** (필수) | gpt-oss | 트랙·유형 식별 → **단일 wave, 최소 계획**으로 해당 전담자에게 직행 |
-| 2 | **Context-Handler** | custom | gpt-oss (128K) | **대형 입력 전담** — FuriosaAI 공식 권장 "긴 입력을 잘라 여러 번 받는 에이전트". SWE-bench(~16.5K tok)를 통째로 수용, 소형 컨텍스트 모델엔 요약본만 전달 |
-| 3 | **Generic-Solver** | custom | gpt-oss | MMLU-Pro 전담. "선택지 문자만, 짧은 근거" 프로토콜 |
-| ~~4~~ | ~~Generic-Adjudicator~~ | — | — | ❌ **confgate 실험으로 기각** (Qwen 2차 의견이 교정 4 < 가로챔 20, 전 θ 손해) |
-| 5 | **Math-Solver** | custom | gpt-oss (math 100% 실측) | \boxed{} 프로토콜, 간결 풀이 |
-| 6 | **Math-Verifier** | reviewer | Qwen3 | 독립 재풀이 → 불일치 시 1회 재시도 후 최선안 확정 (give-up 내장) |
-| 7 | **LCB-Coder** | custom | gpt-oss | 알고리즘 문제: 코드 블록만 출력 |
-| 8 | **SWE-Patcher** | custom | gpt-oss (128K) | 저장소 패치 형식 전담 |
-| 9 | **Format-Warden** | custom | (최저 비용 모델) | **최종 출력이 REQUIRED OUTPUT 형식과 정확히 일치하는지** 마지막 관문 — 형식 오류 = 0점이므로 존재 가치 충분 |
+| 1 | **Conductor** | planner | gpt-oss | directive대로 태스크 1개 생성 → 취합 시 전문가 답 그대로 반환 |
+| 2 | **Generic-Solver** | custom | gpt-oss | MMLU-Pro·GPQA 객관식 |
+| 3 | **Math-Solver** | custom | gpt-oss | AIME/HMMT |
+| 4 | **LCB-Coder** | custom | gpt-oss | 알고리즘 문제 (코드 블록) |
+| 5 | **SWE-Patcher** | custom | gpt-oss | 저장소 패치 (128K 컨텍스트 직접 수용) |
 
-문항당 실제 경로 예시: generic 확신 → `1→3` (2홉). generic 불확실 → `1→3→4` (3홉). math → `1→5→6` (3홉). SWE 대형 → `1→2→8→9` (4홉).
-
-**EXAONE 배제(잠정)**: 실측 generic 50%/2,852tok + FuriosaAI 공식 "배치는 gpt-oss·Qwen 위주" — 정확도·토큰·속도 모두 열세. 매트릭스 완성 후 최종 확정.
-
-**실험으로 결정할 것 (감이 아니라 Test run 데이터로)**:
-- [x] ~~Adjudicator(2차 의견)가 generic 정확도를 올리는가~~ → **아니오, 기각** (confgate n=95)
-- [ ] math self-consistency(2~3표 다수결)가 `run_repeats:2` 재현성에 도움 되는가
-- [ ] Format-Warden 홉의 비용 대비 형식 오류 감소 효과
-- [ ] 로스터 8~9개 vs 축소판 5개의 실측 점수·비용 비교
+확장 후보(실험 중): 인문·법 전문 Generic 솔버(law 40%·history 60% 약점), math 병렬 앙상블 + 판정자(AIME 난이도 대응). 프롬프트·세팅 최종본은 [프롬프트 초안] 탭.
 
 **확인**: 워크스페이스 루트 `.squad.json` 생성 + 저장 시 갱신. 에이전트별 role 문자열에 planner 1개 포함.
 
@@ -121,6 +103,8 @@ flowchart LR
 
 - [x] STEP 0 이해 완료 (평가 구조·제약 확정)
 - [x] 사전 준비: 프로바이더 연결(8445/vLLM), 라우터 가동, dev key, 베이스라인 실행 중
-- [ ] STEP 1 Squad 뼈대 ← **다음 작업**
-- [ ] STEP 2 프롬프트 3종 · STEP 3 리허설 · STEP 4 1차 제출 (8/22 저녁 목표)
-- [ ] STEP 5 시각화 (병렬) · STEP 6 최종 제출
+- [x] STEP 1 Squad 생성 (8/22 13시) → v3.2 로스터 5종으로 재구성 중
+- [x] STEP 2 one-shot 3종 v2(directive 포함) · Check 통과 · **1차 제출 실행 중**
+- [x] STEP 3 리허설 도구: selfeval quick.sh(부트스트랩 CI) + analyze_run.py
+- [x] STEP 5 시각화 뷰어 v1 완성 (bibimbap/viewer)
+- [ ] STEP 4 2차 제출(v3.2 스쿼드) · STEP 6 최종 제출
