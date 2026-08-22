@@ -1,6 +1,8 @@
 # ✍️ Squad v1 프롬프트 초안
 
-> AI:GO에 붙여넣을 **에이전트 시스템 프롬프트 9종** + 제출 폼에 넣을 **one-shot prompt 3종** 초안. 원칙: 영어 작성(벤치마크가 영어), 고정부는 길고 안정적으로(캐시), 지시는 짧고 단호하게(토큰). `⟨θ⟩`는 confgate 실험 결과로 확정.
+> AI:GO에 붙여넣을 **에이전트 시스템 프롬프트 8종** + 제출 폼에 넣을 **one-shot prompt 3종**. 원칙: 영어 작성(벤치마크가 영어), 고정부는 길고 안정적으로(캐시), 지시는 짧고 단호하게(토큰).
+>
+> ✅ **v1 확정 (2026-08-22 오후)**: confgate 실험(n=95)이 generic 하이브리드를 **기각** — gpt-oss 단독 76.8% vs Qwen 65.3%, 게이트는 모든 θ에서 정확도 하락(교정 3건 < 가로챔 14건). **θ=0, Generic-Adjudicator 로스터에서 제거(9→8종)**. Confidence 자기보고는 캘리브레이션이 정직(10→100%, 9→79%, 8→65%)해서 **시각화·give-up 신호용으로 유지**.
 
 ## 공통 규율 (모든 에이전트 프롬프트 말미에 포함)
 
@@ -58,20 +60,13 @@ wrong options, then commit.
 Output exactly two lines:
 Answer: <LETTER>
 Confidence: <N>/10   (be calibrated: 10 = certain, ≤6 = genuinely unsure)
-
-If Confidence ≤ ⟨θ⟩, state "ESCALATE" on a third line.
 ```
 
-### 4. Generic-Adjudicator — role: custom (2차 의견, 조건부 홉)
+> ✅ confgate 결과 반영: ESCALATE 분기 제거 — generic은 어떤 확신도에서도 단독 처리(2차 의견이 순손실). Confidence 줄은 **유지**: 문항당 ~5토큰으로 캘리브레이션 곡선(시각화 Insightfulness 재료)과 트레이스 신호를 얻음.
 
-```
-You are Generic-Adjudicator. You receive a multiple-choice question that a
-colleague found uncertain, plus their tentative answer. Solve it INDEPENDENTLY
-first — do not look at their answer until you have your own. If you agree,
-confirm; if you disagree, your answer wins only when you can name the specific
-error in theirs. Output exactly one line:
-Answer: <LETTER>
-```
+### ~~4. Generic-Adjudicator~~ — ❌ 로스터에서 제거 (confgate 기각)
+
+> 실험 근거: Qwen 2차 의견은 교정 3건 vs 정답 가로챔 14건 — 모든 θ에서 순손실. 결정 로그 #12.
 
 ### 5. Math-Solver — role: custom
 
@@ -174,8 +169,12 @@ block or patch), with no commentary.
 
 ## C. 확정 대기 항목
 
-- [ ] `⟨θ⟩` 값 + generic 게이트 방식 (자기보고 확신 vs 답변 일치) — **confgate 140문항 결과로 확정**
+- [x] ~~`⟨θ⟩` 값 + generic 게이트 방식~~ → **확정: θ=0 (게이트 없음), Adjudicator 제거** — confgate n=95: gpt-oss 76.8% vs Qwen 65.3%, 게이트는 전 구간 손해
 - [ ] REQUIRED OUTPUT 실제 문구 대조 (published requests에서 트랙별 원문 확인 후 프롬프트 미세조정)
 - [ ] Math-Verifier·Format-Warden 홉의 채택 여부 — Test run A/B로 판정
-- [ ] AI:GO Squad의 태스크 위임 시 컨텍스트 전달 방식 확인 (에이전트가 원문 전체를 받는지, 플래너 요약만 받는지 — 핸즈온/실험으로)
+- [ ] AI:GO Squad의 태스크 위임 시 컨텍스트 전달 방식 확인 (에이전트가 원문 전체를 받는지, 플래너 요약만 받는지 — 스모크 테스트에서 관찰)
+
+## D. 부수 발견 (프롬프트 개선 효과)
+
+confgate의 s1 프롬프트(3문장 추론 + Confidence 요구)로 gpt-oss generic이 **60% → 76.8%** 로 상승 (표본 20→95 확대 효과 포함). 구조화된 짧은 추론 지시가 단순 "Answer:" 요구보다 정확도를 올림 — **이 스타일을 one-shot prompt와 Generic-Solver에 이미 반영함.**
 ```
