@@ -81,7 +81,9 @@ If your derivation felt shaky or two attempts disagreed, append one line: UNSURE
 
 > 💡 `run_repeats: 2` 대비 — 같은 문제에 같은 답이 나오는 **재현성**이 점수. 창의적 우회보다 정석 풀이.
 
-### 6. Math-Verifier — role: reviewer (UNSURE일 때만 호출)
+### 6. Math-Verifier — role: reviewer (UNSURE일 때만 호출) · 모델: **gpt-oss** (Qwen에서 변경)
+
+> confgate 교훈 적용: 더 약한 모델(math 86.7%)이 더 강한 모델(100%)의 답을 뒤집을 권한을 갖게 하면 Adjudicator와 같은 함정. 검증도 gpt-oss가 **다른 경로로** 재풀이(self-consistency)하는 방식으로.
 
 ```
 You are Math-Verifier. You receive a math problem and a proposed final answer.
