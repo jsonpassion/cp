@@ -45,14 +45,15 @@ flowchart LR
 - **무시됨**(Check 경고로 확정): `settingsOverrides`(maxTokens·maxToolCalls) · `toolConfig.enabledTools`(평가는 tool-less) → GUI 저장 시 도구가 다시 켜져도 무방
 - 구조: `{squadId, squadName, initializedAt, appVersion, config: {agents: [...]}}` — 에이전트 배열은 `config.agents`
 
-### 현재 파일 상태 (check_squad.py, 8/22 17:31 저장본)
+### 현재 파일 상태 (check_squad.py, 8/22 17:41 저장본) — ✅ 제출 가능
 
-| 에이전트 | 프롬프트 | 설명 | 판정 |
-| --- | --- | --- | --- |
-| Conductor | v3.3 (never zero) | 기본값 "Coordinates and distributes…" | ⚠️ v3.4 청크로 교체 + 설명 입력 |
-| Generic / Math / LCB / SWE | v3.1 (hand-off 줄 잔존) | 비어 있음 | ⚠️ RULES 마지막 줄 교체 + 설명 1줄 입력 |
-
-→ **다섯 카드 모두 편집 → Save → check_squad.py ✅ 후에만 추출.** 모델(gpt-oss 5/5)·플래너·크기(15.9 KB)는 이미 정상.
+| 항목 | 상태 |
+| --- | --- |
+| 프롬프트 | **5/5 v3.4** (Agent economy · only-agent RULES) |
+| 모델 | 5/5 gpt-oss-120b · 플래너 Conductor · 16.8 KB |
+| Check 결과 | **No problems found · 경고 15건** = settingsOverrides 5 + tools/enabledTools 5×2 — 전부 "평가에 미전달" 계열, 정정 불필요 |
+| 남은 선택 사항 | ① 설명(description) 5장 공란 — 플래너 로스터 표시용 1줄씩 입력 권장(directive가 담당을 지정하므로 필수는 아님) ② 도구 토글 OFF는 경고만 줄일 뿐 평가 무관 — 시간 남으면 |
+| 확인된 사실 | Conductor의 enabledTools 6개(read_file·write_file·list_files·list_directory·search_files·get_current_time)에 **create_task 없음** → 태스크 생성은 내부 플래너 기능이며 tool-less 경고 대상이 아님 |
 
 ## 1. 이름 후보 아카이브 (검토 기록)
 
