@@ -36,7 +36,7 @@ flowchart LR
 | 1 | **Conductor** | **planner** (필수) | gpt-oss | 트랙·유형 식별 → **단일 wave, 최소 계획**으로 해당 전담자에게 직행 |
 | 2 | **Context-Handler** | custom | gpt-oss (128K) | **대형 입력 전담** — FuriosaAI 공식 권장 "긴 입력을 잘라 여러 번 받는 에이전트". SWE-bench(~16.5K tok)를 통째로 수용, 소형 컨텍스트 모델엔 요약본만 전달 |
 | 3 | **Generic-Solver** | custom | gpt-oss | MMLU-Pro 전담. "선택지 문자만, 짧은 근거" 프로토콜 |
-| ~~4~~ | ~~Generic-Adjudicator~~ | — | — | ❌ **confgate 실험으로 기각** (Qwen 2차 의견이 교정 3 < 가로챔 14, 전 θ 손해) |
+| ~~4~~ | ~~Generic-Adjudicator~~ | — | — | ❌ **confgate 실험으로 기각** (Qwen 2차 의견이 교정 4 < 가로챔 20, 전 θ 손해) |
 | 5 | **Math-Solver** | custom | gpt-oss (math 100% 실측) | \boxed{} 프로토콜, 간결 풀이 |
 | 6 | **Math-Verifier** | reviewer | Qwen3 | 독립 재풀이 → 불일치 시 1회 재시도 후 최선안 확정 (give-up 내장) |
 | 7 | **LCB-Coder** | custom | gpt-oss | 알고리즘 문제: 코드 블록만 출력 |

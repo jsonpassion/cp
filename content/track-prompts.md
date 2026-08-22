@@ -2,7 +2,7 @@
 
 > AI:GO에 붙여넣을 **에이전트 시스템 프롬프트 8종** + 제출 폼에 넣을 **one-shot prompt 3종**. 원칙: 영어 작성(벤치마크가 영어), 고정부는 길고 안정적으로(캐시), 지시는 짧고 단호하게(토큰).
 >
-> ✅ **v1 확정 (2026-08-22 오후)**: confgate 실험(n=95)이 generic 하이브리드를 **기각** — gpt-oss 단독 76.8% vs Qwen 65.3%, 게이트는 모든 θ에서 정확도 하락(교정 3건 < 가로챔 14건). **θ=0, Generic-Adjudicator 로스터에서 제거(9→8종)**. Confidence 자기보고는 캘리브레이션이 정직(10→100%, 9→79%, 8→65%)해서 **시각화·give-up 신호용으로 유지**.
+> ✅ **v1 확정 (2026-08-22 오후)**: confgate 실험(**n=140 최종**)이 generic 하이브리드를 **기각** — gpt-oss 단독 **78.6%** vs Qwen 66.9%, 게이트는 모든 θ에서 정확도 하락(교정 4건 < 가로챔 **20건**, conf 10에서도 가로챔 발생). **θ=0, Generic-Adjudicator 로스터에서 제거(9→8종)**. Confidence 자기보고는 캘리브레이션이 정직(10→100%, 9→79%, 8→65%)해서 **시각화·give-up 신호용으로 유지**.
 
 ## 공통 규율 (모든 에이전트 프롬프트 말미에 포함)
 
@@ -66,7 +66,7 @@ Confidence: <N>/10   (be calibrated: 10 = certain, ≤6 = genuinely unsure)
 
 ### ~~4. Generic-Adjudicator~~ — ❌ 로스터에서 제거 (confgate 기각)
 
-> 실험 근거: Qwen 2차 의견은 교정 3건 vs 정답 가로챔 14건 — 모든 θ에서 순손실. 결정 로그 #12.
+> 실험 근거: Qwen 2차 의견은 교정 4건 vs 정답 가로챔 20건 — 모든 θ에서 순손실. 결정 로그 #12.
 
 ### 5. Math-Solver — role: custom
 
@@ -171,7 +171,7 @@ block or patch), with no commentary.
 
 ## C. 확정 대기 항목
 
-- [x] ~~`⟨θ⟩` 값 + generic 게이트 방식~~ → **확정: θ=0 (게이트 없음), Adjudicator 제거** — confgate n=95: gpt-oss 76.8% vs Qwen 65.3%, 게이트는 전 구간 손해
+- [x] ~~`⟨θ⟩` 값 + generic 게이트 방식~~ → **확정: θ=0 (게이트 없음), Adjudicator 제거** — confgate n=140 최종: gpt-oss 78.6% vs Qwen 66.9%, 게이트는 전 구간 손해
 - [ ] REQUIRED OUTPUT 실제 문구 대조 (published requests에서 트랙별 원문 확인 후 프롬프트 미세조정)
 - [ ] Math-Verifier·Format-Warden 홉의 채택 여부 — Test run A/B로 판정
 - [ ] AI:GO Squad의 태스크 위임 시 컨텍스트 전달 방식 확인 (에이전트가 원문 전체를 받는지, 플래너 요약만 받는지 — 스모크 테스트에서 관찰)
