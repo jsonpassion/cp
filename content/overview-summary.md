@@ -1,3 +1,5 @@
+> 🏁 **08/23 08:32 제출용 리포 완성**: https://github.com/jsonpassion/junction2026-54-1-CouchPotato — `keynote/keynote.pdf`(5분 영어 11장 + `script.md` 한글병기 대본) · `viewer/kids.html`(최종 DIRECT 파이프라인 그림책, 시연용: https://jsonpassion.github.io/junction2026-54-1-CouchPotato/viewer/kids.html) · `viewer/viewer.html`(원장/간단) · `squad/`(최종 카드·one-shot v3.5·squad.json) · README(3축 정렬). 플랫폼 폼: Punchline/Description은 최종 제출 탭, 팀원 이름은 키노트 11장에 기입.
+
 # 🏠 대시보드 — [541] BIBIMBAP (팀 CouchPotato 54-1)
 
 🕒 **최신 반영: 2026-08-23 03:20 KST** — 이 페이지는 "지금 어디에 있고 오늘 뭘 하나"만 담습니다. 근거는 각 탭에.
