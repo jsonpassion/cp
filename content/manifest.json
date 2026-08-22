@@ -1,5 +1,5 @@
 {
-  "version": 16,
+  "version": 17,
   "tabs": [
     {
       "id": "overview",
@@ -67,6 +67,11 @@
           "id": "build",
           "label": "빌드 가이드",
           "file": "track-build.md"
+        },
+        {
+          "id": "viz",
+          "label": "시각화·발표",
+          "file": "track-viz.md"
         },
         {
           "id": "submission",
