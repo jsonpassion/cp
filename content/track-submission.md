@@ -82,7 +82,7 @@ flowchart LR
 | `3rd_v3.7b.squad.json` | 19:19 저장본 · 17,432 bytes · Conductor **Qwen3-32B `/no_think`**(프롬프트 v3.4) + Generic-Solver **v3.7b**(private reasoning, 140문항 80.9%) + Math·LCB·SWE **v3.6**(답만 출력) · 전원 도구 무효·메모리 OFF | Your squad's .squad.json |
 | `oneshot_coding_v2.2.txt` (1,251 B) · `oneshot_math_v2.2.txt` (1,142 B) · `oneshot_generic_v2.2.txt` (1,044 B) | [PLANNING DIRECTIVE] + [FINAL RESPONSE RULE] + [SOLVING INSTRUCTIONS] + "Solve this problem:" + `{{TASK}}` | One-shot 3칸 |
 
-검증 근거: 3트랙 GUI 완주 태스크 1 (math·generic·coding, `/no_think` 후 재확인) · 플래너 2턴 61 tok · 솔버 부트스트랩 generic 80.9% / math 100% / LCB 90% · Check 경고 15건(평가 미전달 계열만).
+검증 근거: 3트랙 GUI 완주 태스크 1 (math·generic·coding, `/no_think` 후 재확인) · 플래너 2턴 61 tok · 솔버 전수 측정 generic 80.9% (140) / math 82.6% (164) / LCB 88.9% (20) — 전 트랙 베이스라인 이상, 출력 토큰 −15~−21% · Check 경고 15건(평가 미전달 계열만).
 
 ### 제출 이력
 
