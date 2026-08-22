@@ -1,3 +1,5 @@
+> 🟢 **08/23 07:51 — 직전 런(v6.3 + one-shot v3.3) = 0.373, 4위** (coding 18.4 · math 53.8 · generic 58.6, 322회 = 2.2/문항, 2.26M tok, 11분). 1위 0.426과의 차 0.053 = generic −15.9%p(0.040) + coding −2.7%p(0.013). math 13문항 중 **2건·generic 1건 미채점**(빈/미완 출력 추정 → 마무리 규율 추가). **다음 세트 v6.4 + one-shot v3.5**: `card_conductor_v6.4.txt`(마무리 규율: 미완 메시지 0점·검증되면 즉시 확정·항상 답으로 끝 + SWE 정밀 패치 절차) · `oneshot_{generic,math,coding}_v3.5.txt`(히든 도메인 특성: MMLU-Pro/GPQA 첫 원리 계산·함정 선택지, AIME 0–999/HMMT 정확한 형태·역대입 검증, LCB 입력 형식·fast I/O, SWE git-apply 가능한 diff). GUI 게이트 `gui_generic_v64.txt` → 0태스크 후 제출.
+
 # 🧾 최종 제출 세트 — v6.3 DIRECT + one-shot v3.3
 
 🕒 **최신 반영: 2026-08-23 03:20 KST** — 이 페이지의 파일명이 곧 최종본. 이전 버전(v3.x~v7.1)과 프롬프트 전문은 [📚 아카이브 › 프롬프트 전체 이력 · 제출 초안 전문].
