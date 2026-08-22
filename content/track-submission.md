@@ -20,7 +20,7 @@
 | Team Number * | `541` (팀번호 54-1, 대시 제외 3자리) |
 | Challenge Picker * | Lablup / Build the Ultimate Agent Squad |
 | Punchline * (200자) | 아래 |
-| Description * (5000자, 마크다운) | 아래 초안 — 제출 전 최종 스쿼드 기준으로 갱신 |
+| Description * (5000자, 마크다운) | 아래 최종본(= deck/summary.md) |
 | Project Demo | https://jsonpassion.github.io/bibimbap/ (`viewer/viewer.html` · `viewer/kids.html`) |
 | Source Code | https://github.com/jsonpassion/bibimbap (public, MIT, 오픈소스 명시) |
 | Presentation | `bibimbap/deck/deck.pdf` (12p, 영문) — Google Drive **"링크가 있는 모든 사용자"** 공개 링크 (시크릿 창에서 열어 확인) |
@@ -29,83 +29,29 @@
 
 제출 후: status **final** 확인 → Discord `✅-confirm-submission` 채널에서 반영 확인(스크린샷) → 별도 제공 폼에도 제출(필수 아님, 강력 권장).
 
-## Punchline * — ✅ 확정
-
-**영문:**
+## Punchline * — ✅ 최종 (08/23 03:34)
 
 ```
-BIBIMBAP is a bowl of small models on Korean NPUs — instruct and reasoning
-agents mixed to perfection, serving big-model answers at a fraction of the tokens.
+관측할 수 있으면 줄일 수 있다 — 손에 쥘 수 있는 모델로 만든 스쿼드의 모든 판단을 Trace로 되감고, 43배 낭비를 ÷17로 걷어낸 뒤 채점 경로까지 읽어내 단순화한 팀.
 ```
+(99자)
 
-**국문 대안:**
+## Description * — ✅ 최종 (08/23 03:34, `bibimbap/deck/summary.md`와 동일)
 
 ```
-비빔밥(BIBIMBAP): 한국산 NPU 위에 작은 모델들을 한 그릇에 비볐습니다.
-거대 모델급 정답을 토큰 몇 분의 일로 말아 드립니다.
+[541] BIBIMBAP — 관측할 수 있으면 줄일 수 있다
+
+손에 쥘 수 있는 모델(FuriosaAI RNGD 위 gpt-oss-120b)로 AI:GO 에이전트 스쿼드를 만들고, 그 스쿼드의 모든 판단을 Trace로 되감아 보게 했습니다.
+
+첫 스쿼드는 같은 수학 문항에 단독 모델(617 tok·5.09 s)의 43배인 26,808 tok·60.2 s를 썼습니다. 로그를 해부하자 낭비는 세 층이었습니다 — 플래너의 동일 태스크 3중 생성, 태스크당 최대 11회의 루프 공회전(총 28회 호출), 비용의 91%를 차지한 입력 재전송. 루프 규약을 역공학하고, 로컬 로그에 없던 플래너 thinking 비용을 라우터 통계로 찾아 /no_think(1,229→54 tok)로 잘라내자 같은 문항이 1,611 tok·17 s(÷17)가 됐습니다.
+
+솔버 프롬프트는 공개 연습 세트 전수로 검증했습니다: generic 140문항 79.1→80.9%(출력 토큰 −16%), math 164문항 79.8→82.6%(−21%), LCB 20문항 75.0→88.9%(−15%), AIME-2024는 Reasoning: high로 72.4→78.6%. Qwen3와 EXAONE은 측정 후 제외했고, 20문항 베이스라인 60%가 표본 불운이었음도 전수로 정정했습니다.
+
+가장 큰 교훈은 리더보드였습니다. 로컬에선 정답을 내던 3 솔버+Judge 앙상블(v7.1)이 0.045 — Judge의 답이 채점기에 닿지 않았습니다. 공개 보드의 요청 수가 Trace였습니다: 상위 3팀 모두 gpt-oss ≈ 1회/문항(DemoDayCare는 정확히 147회 = 1/문항), 즉 채점기는 계획 단계 플래너의 최종 메시지를 읽습니다. 최종 v6.0 DIRECT는 2 에이전트(전원 gpt-oss, Reasoning: high): Conductor가 0 태스크·0 도구로 직접 답을 쓰고, 같은 페르소나의 Solver가 fan-out 보험을 섭니다(러너 충실 조건 generic 76.0%, 재측정 중).
+
+산출물: .squad.json + one-shot, Trace Viewer(간단/원장 모드, 루브릭 6축 1:1, 원본 events.jsonl 재생, 로그에 없는 답 텍스트는 '미기록'으로 표시), 그림책 kids.html. 리포 github.com/jsonpassion/bibimbap · 데모 jsonpassion.github.io/bibimbap/
 ```
-
-> ⚠️ 문구 점검: "instruct and reasoning agents mixed"는 킥오프 시점 표현. 최종 스쿼드는 gpt-oss-120b 단일(2 에이전트)이며 "섞어 보고 이기는 재료만 남겼다"가 실제 이야기 — 제출 시 유지/수정 여부만 결정.
-
-> **선정 이유 (직관성 기준)**: 전 세계가 아는 단어라 국제 심사위원에게 1초 전달, 한국 참가자(투표 60%)에겐 웃음과 공감. 이름이 곧 아키텍처 — 서로 다른 재료를 한 그릇에 비벼 완성하는 스쿼드. 한국 NPU 위에 한국 음식 이름 = 소버린 AI 서사까지 자동 완성.
-
-## Description * — 초안 (킥오프 제출본)
-
-> ⚠️ 아래 "Our Answer" 문단의 Router / Solver(s) / Verifier / Give-up Judge 구조는 **킥오프 시점 설계**. 최종 스쿼드는 **에이전트 2(Conductor 플래너가 직접 답 + Solver), 전원 gpt-oss-120b, DIRECT**이며 서사는 "관측 → 절감 → 재투자 실험 → 단순화". 제출 전에 `bibimbap/deck/summary.md`(1,196자) 기준으로 이 문단을 갱신할 것. 나머지(질문·Observability·Tech Stack·Why It Matters)는 그대로 유효.
-
-```markdown
-# BIBIMBAP — small models, mixed to perfection
-
-## The Question We're Answering
-Lablup × FuriosaAI asked: **"How far can you go with a model you can
-actually hold in your hands?"** Frontier AI lives behind massive
-infrastructure owned by the biggest tech companies. We believe the answer
-to accessibility is not a bigger model — it's a smarter structure.
-
-Bibimbap is a Korean dish where separate ingredients — none of them a
-meal on its own — are mixed in one bowl into something complete. That is
-exactly our architecture.
-
-## Our Answer: Structure over Size
-BIBIMBAP is an AI agent squad built on **AI:GO's Squad functionality**,
-running entirely on models served by **FuriosaAI RNGD** NPUs. Instead of
-one giant brain, we mix small models into specialized roles:
-
-- **Router** — triages each problem by type and difficulty. Easy items
-  get a single-shot answer; hard ones wake the full squad.
-- **Solver(s)** — per-track model assignment: instruct models where
-  breadth wins, reasoning models only where deep thinking pays off.
-- **Verifier** — re-solves the problem through an independent path and
-  checks answer/format consistency (pure LLM verification — the squad
-  uses no external tools at evaluation time).
-- **Give-up Judge** — decides when a problem is no longer worth its
-  tokens, submits the best attempt so far, and reallocates the saved
-  budget to problems that can still be won.
-
-Every prompt is structured with a **long stable prefix** (roles, rules,
-exemplars) and a short variable tail (the problem), maximizing prefix-
-cache hits and cutting effective token cost.
-
-## Radical Observability
-Every run emits a structured trace log. A standalone replay viewer
-renders it as a live agent graph with a timeline scrubber, per-decision
-rationale ("why did the Router escalate?", "why did we give up here?"),
-and cross-run analytics — including how many tokens the Give-up Judge
-saved. Observability, interpretability, traceability, explainability,
-clarity, and insight are treated as product features, not afterthoughts.
-
-## Tech Stack
-- **AI:GO** (Lablup) — agent squad core path
-- **FuriosaAI RNGD**-served model endpoints via Backend.AI
-- Vanilla web (HTML/JS) trace replay viewer — runs offline from a log file
-- Open-source libraries are listed and attributed in the repository
-
-## Why It Matters
-If a handful of pocket-size models on sovereign, power-efficient NPUs
-can match big-model answers on a token budget, then intelligence really
-can flow like electricity — reaching wherever it's needed. That is
-"Make AI Accessible," demonstrated.
-```
+(1195자 · 5000자 한도)
 
 ## 🎤 발표 산출물 — `bibimbap/deck/` (리포에 푸시됨)
 
