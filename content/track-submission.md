@@ -23,7 +23,7 @@
 | Description * (5000자, 마크다운) | 아래 최종본(= deck/summary.md) |
 | Project Demo | https://jsonpassion.github.io/junction2026-54-1-CouchPotato/viewer/kids.html (그림책·무한 루프 시연) · `…/viewer/viewer.html` |
 | Source Code | https://github.com/jsonpassion/junction2026-54-1-CouchPotato (public; 작업 이력은 github.com/jsonpassion/bibimbap) |
-| Presentation | `junction2026-54-1-CouchPotato/keynote/keynote.pdf` (18p, 영문 5분 키노트) — Google Drive **"링크가 있는 모든 사용자"** 공개 링크 (시크릿 창에서 열어 확인) 또는 리포 내 PDF 링크 |
+| Presentation | `junction2026-54-1-CouchPotato/keynote/keynote.pptx` (영문 18장, 편집 가능) · PDF 필요 시 `keynote.pdf`(18p) — Google Drive **"링크가 있는 모든 사용자"** 공개 링크 (시크릿 창에서 열어 확인) 또는 리포 링크 https://github.com/jsonpassion/junction2026-54-1-CouchPotato/blob/main/keynote/keynote.pptx |
 | Project Summary | `bibimbap/deck/summary.md` (1,303자, 09:45 갱신) |
 | Video | (여유 시) 뷰어 리플레이 30초 녹화 |
 
